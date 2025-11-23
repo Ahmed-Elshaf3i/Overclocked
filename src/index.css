@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles */
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  body {
+    @apply m-0 font-sans antialiased bg-white dark:bg-dark-bg-primary text-gray-900 dark:text-dark-text-primary transition-colors duration-300;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  /* Smooth scrollbar for dark mode */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-dark-bg-secondary;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-dark-bg-elevated rounded-full hover:bg-gray-400 dark:hover:bg-dark-border-secondary;
+  }
+}
+
+/* Custom Component Styles */
+@layer components {
+  /* Primary Button */
+  .btn-primary {
+    @apply bg-accent text-white px-8 py-3 rounded hover:bg-accent-hover active:bg-accent-active transition-colors font-medium;
+  }
+  
+  /* Secondary Button */
+  .btn-secondary {
+    @apply bg-black dark:bg-dark-bg-secondary text-white px-8 py-3 rounded-lg hover:bg-neutral-800 dark:hover:bg-dark-bg-tertiary transition-all duration-300 font-medium shadow-md hover:shadow-lg hover:scale-105;
+  }
+  
+  /* Outline Button */
+  .btn-outline {
+    @apply border-2 border-neutral-300 dark:border-dark-border-primary text-gray-900 dark:text-dark-text-primary px-8 py-3 rounded-lg hover:border-black dark:hover:border-dark-accent-primary hover:shadow-lg dark:hover:shadow-glow-indigo transition-all duration-300 font-medium bg-transparent;
+  }
+  
+  /* Input Field */
+  .input-field {
+    @apply w-full px-4 py-3 border border-neutral-300 dark:border-dark-border-primary rounded-lg focus:outline-none focus:border-black dark:focus:border-dark-accent-primary focus:ring-2 focus:ring-black/10 dark:focus:ring-dark-accent-primary/20 transition-all duration-300 bg-neutral-50 dark:bg-dark-bg-secondary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-dark-text-muted;
+  }
+  
+  /* Product Card */
+  .product-card {
+    @apply bg-white dark:bg-dark-bg-secondary rounded-card shadow-card hover:shadow-card-hover dark:shadow-card-dark dark:hover:shadow-card-hover-dark transition-all duration-300 hover:-translate-y-1 border border-transparent dark:border-dark-border-primary;
+  }
+  
+  /* Discount Badge */
+  .badge-discount {
+    @apply bg-accent text-white text-xs font-semibold px-3 py-1 rounded;
+  }
+  
+  /* New Badge */
+  .badge-new {
+    @apply bg-success text-white text-xs font-semibold px-3 py-1 rounded;
+  }
+  
+  /* Container */
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Section Heading */
+  .section-heading {
+    @apply text-4xl font-bold text-black dark:text-dark-text-primary mb-8;
+  }
+  
+  /* Section with Red Bar */
+  .section-title-bar {
+    @apply flex items-center gap-4 mb-6;
+  }
+  
+  .section-title-bar::before {
+    @apply content-[''] w-1 h-10 bg-accent dark:bg-dark-accent-primary rounded shadow-md dark:shadow-glow-indigo;
+  }
+  
+  /* Enhanced card with glow effect */
+  .card-glow {
+    @apply relative overflow-hidden;
+  }
+  
+  .card-glow::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500;
+    background: radial-gradient(circle at center, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+  }
+  
+  /* Animated gradient background */
+  .gradient-animate {
+    background: linear-gradient(-45deg, #6366f1, #8b5cf6, #ec4899, #f59e0b);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+  
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+}
+
+/* Utility Classes */
+@layer utilities {
+  .text-strikethrough {
+    @apply line-through opacity-50;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
