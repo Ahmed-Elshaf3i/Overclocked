@@ -11,7 +11,6 @@ import { ProductDetailPage } from '@/pages/ProductDetailPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { SignInPage } from '@/pages/SignInPage';
 import { SignUpPage } from '@/pages/SignUpPage';
-import { WishlistPage } from '@/pages/WishlistPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 // Create browser router with all routes
@@ -56,10 +55,6 @@ export const router = createBrowserRouter([
       {
         path: 'signup',
         element: <SignUpPage />,
-      },
-      {
-        path: 'wishlist',
-        element: <WishlistPage />,
       },
       {
         path: '*',

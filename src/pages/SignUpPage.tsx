@@ -48,8 +48,8 @@ export const SignUpPage: FC = () => {
           {/* Right Side - Sign Up Form */}
           <div className="max-w-md mx-auto w-full">
             <div className="mb-8">
-              <h1 className="text-3xl font-semibold mb-3">Create an account</h1>
-              <p className="text-gray-600">Enter your details below</p>
+              <h1 className="text-3xl font-semibold mb-3 text-gray-900 dark:text-dark-text-primary">Create an account</h1>
+              <p className="text-gray-600 dark:text-dark-text-secondary">Enter your details below</p>
             </div>
             
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -92,7 +92,7 @@ export const SignUpPage: FC = () => {
               <button
                 type="button"
                 onClick={handleGoogleSignUp}
-                className="w-full flex items-center justify-center gap-3 px-8 py-3 border border-neutral-300 rounded hover:border-black transition-colors"
+                className="w-full flex items-center justify-center gap-3 px-8 py-3 border border-neutral-300 dark:border-dark-border-primary rounded hover:border-black dark:hover:border-dark-accent-primary transition-colors bg-white dark:bg-dark-bg-secondary text-gray-900 dark:text-dark-text-primary"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path
@@ -117,9 +117,9 @@ export const SignUpPage: FC = () => {
             </form>
             
             {/* Login Link */}
-            <p className="text-center mt-8 text-gray-600">
+            <p className="text-center mt-8 text-gray-600 dark:text-dark-text-secondary">
               Already have account?{' '}
-              <Link to="/signin" className="underline hover:no-underline ml-2">
+              <Link to="/signin" className="underline hover:no-underline ml-2 text-gray-900 dark:text-dark-text-primary transition-colors">
                 Log in
               </Link>
             </p>

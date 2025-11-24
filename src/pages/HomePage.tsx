@@ -1,10 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowRightIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import {
   TruckIcon,
   ShieldCheckIcon,
@@ -358,145 +354,121 @@ export const HomePage: FC = () => {
     },
   ];
 
-  // Categories for sidebar
-  const categories = [
-    "Woman's Fashion",
-    "Men's Fashion",
-    "Electronics",
-    "Home & Lifestyle",
-    "Medicine",
-    "Sports & Outdoor",
-    "Baby's & Toys",
-    "Groceries & Pets",
-    "Health & Beauty",
-  ];
-
   return (
     <div className="w-full">
-      {/* Hero Section with Category Sidebar */}
+      {/* Hero Section with Carousel */}
       <section className="border-b border-neutral-200">
         <div className="container-custom py-8">
-          <div className="flex gap-8">
-            {/* Category Sidebar */}
-            <aside className="hidden lg:block w-64 border-r border-neutral-200 pr-8">
-              <nav className="space-y-3">
-                {categories.map((category, index) => (
-                  <Link
-                    key={index}
-                    to={`/category/${category
-                      .toLowerCase()
-                      .replace(/[^a-z0-9]+/g, "-")}`}
-                    className="flex items-center justify-between text-gray-700 hover:text-black transition-colors py-2"
-                  >
-                    <span>{category}</span>
-                    {(category === "Woman's Fashion" ||
-                      category === "Men's Fashion") && (
-                      <ArrowRightIcon className="w-4 h-4" />
-                    )}
-                  </Link>
-                ))}
-              </nav>
-            </aside>
+          {/* Hero Carousel */}
+          <div className="relative overflow-hidden rounded-lg">
+            {/* Carousel Slides Container */}
+            <div
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {carouselSlides.map((slide) => (
+                <div
+                  key={slide.id}
+                  className={`min-w-full ${slide.bgColor} text-white`}
+                >
+                  <div className="flex flex-col md:flex-row items-center justify-between px-8 md:px-16 py-12 min-h-[400px]">
+                    <div className="max-w-md mb-8 md:mb-0 z-10">
+                      {/* Brand label with icon */}
+                      <div className="flex items-center gap-3 mb-4">
+                        <svg
+                          className="w-10 h-10"
+                          viewBox="0 0 40 40"
+                          fill="none"
+                        >
+                          <path
+                            d="M20 0L25 15H40L28 24L33 40L20 30L7 40L12 24L0 15H15L20 0Z"
+                            fill="white"
+                          />
+                        </svg>
+                        <span className="text-sm font-medium">
+                          {slide.subtitle}
+                        </span>
+                      </div>
 
-            {/* Hero Carousel */}
-            <div className="flex-1 relative overflow-hidden rounded-lg">
-              {/* Carousel Slides Container */}
-              <div
-                className="flex transition-transform duration-700 ease-in-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {carouselSlides.map((slide) => (
-                  <div
-                    key={slide.id}
-                    className={`min-w-full ${slide.bgColor} text-white`}
-                  >
-                    <div className="flex flex-col md:flex-row items-center justify-between px-8 md:px-16 py-12 min-h-[400px]">
-                      <div className="max-w-md mb-8 md:mb-0 z-10">
-                        {/* Brand label with icon */}
-                        <div className="flex items-center gap-3 mb-4">
-                          <svg
-                            className="w-10 h-10"
-                            viewBox="0 0 40 40"
-                            fill="none"
-                          >
-                            <path
-                              d="M20 0L25 15H40L28 24L33 40L20 30L7 40L12 24L0 15H15L20 0Z"
-                              fill="white"
-                            />
-                          </svg>
-                          <span className="text-sm font-medium">
-                            {slide.subtitle}
+                      {/* Main heading */}
+                      <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                        {slide.title}
+                      </h1>
+
+                      {/* Discount Badge */}
+                      {slide.discount && (
+                        <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg mb-6">
+                          <span className="text-2xl font-bold">
+                            Save up to {slide.discount}
                           </span>
                         </div>
+                      )}
 
-                        {/* Main heading */}
-                        <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                          {slide.title}
-                        </h1>
-
-                        {/* Discount Badge */}
-                        {slide.discount && (
-                          <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg mb-6">
-                            <span className="text-2xl font-bold">
-                              Save up to {slide.discount}
-                            </span>
-                          </div>
-                        )}
-
-                        {/* CTA */}
-                        <Link
-                          to={slide.link}
-                          className="inline-flex items-center gap-2 text-white underline hover:no-underline transition-all group"
+                      {/* CTA */}
+                      <Link
+                        to={slide.link}
+                        className="inline-flex items-center gap-2 text-white underline hover:no-underline transition-all group"
+                      >
+                        Shop Now
+                        <svg
+                          className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          stroke="currentColor"
                         >
-                          Shop Now
-                          <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      </div>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                          />
+                        </svg>
+                      </Link>
+                    </div>
 
-                      {/* Slide Image */}
-                      <div className="flex-shrink-0 relative">
-                        <img
-                          src={slide.image}
-                          alt={slide.subtitle}
-                          className="w-full max-w-md h-auto object-contain drop-shadow-2xl"
-                        />
-                      </div>
+                    {/* Slide Image */}
+                    <div className="flex-shrink-0 relative">
+                      <img
+                        src={slide.image}
+                        alt={slide.subtitle}
+                        className="w-full max-w-md h-auto object-contain drop-shadow-2xl"
+                      />
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
+            </div>
 
-              {/* Navigation Arrows */}
-              <button
-                onClick={goToPrevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all z-20"
-                aria-label="Previous slide"
-              >
-                <ChevronLeftIcon className="w-6 h-6 text-white" />
-              </button>
-              <button
-                onClick={goToNextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all z-20"
-                aria-label="Next slide"
-              >
-                <ChevronRightIcon className="w-6 h-6 text-white" />
-              </button>
+            {/* Navigation Arrows */}
+            <button
+              onClick={goToPrevSlide}
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all z-20"
+              aria-label="Previous slide"
+            >
+              <ChevronLeftIcon className="w-6 h-6 text-white" />
+            </button>
+            <button
+              onClick={goToNextSlide}
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all z-20"
+              aria-label="Next slide"
+            >
+              <ChevronRightIcon className="w-6 h-6 text-white" />
+            </button>
 
-              {/* Carousel Dots Indicator */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-20">
-                {carouselSlides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToSlide(index)}
-                    className={`transition-all ${
-                      index === currentSlide
-                        ? "w-8 h-3 bg-accent rounded-full"
-                        : "w-3 h-3 bg-white/50 hover:bg-white/70 rounded-full"
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
+            {/* Carousel Dots Indicator */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-20">
+              {carouselSlides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`transition-all ${
+                    index === currentSlide
+                      ? "w-8 h-3 bg-accent rounded-full"
+                      : "w-3 h-3 bg-white/50 hover:bg-white/70 rounded-full"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>

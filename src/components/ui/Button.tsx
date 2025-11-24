@@ -19,13 +19,13 @@ export const Button: FC<ButtonProps> = ({
   ...props
 }) => {
   // Base classes for all buttons
-  const baseClasses = 'px-8 py-3 rounded font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'px-8 py-3 rounded font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed';
   
   // Variant-specific classes
   const variantClasses = {
-    primary: 'bg-accent text-white hover:bg-accent-hover active:bg-accent-active',
-    secondary: 'bg-black text-white hover:bg-neutral-800',
-    outline: 'border-2 border-neutral-300 hover:border-black bg-transparent',
+    primary: 'bg-accent dark:bg-dark-accent-primary text-white hover:bg-accent-hover dark:hover:bg-dark-accent-secondary active:bg-accent-active shadow-md hover:shadow-lg dark:hover:shadow-glow-red',
+    secondary: 'bg-black dark:bg-dark-bg-elevated text-white hover:bg-neutral-800 dark:hover:bg-dark-bg-tertiary shadow-md hover:shadow-lg',
+    outline: 'border-2 border-neutral-300 dark:border-dark-border-primary text-gray-900 dark:text-dark-text-primary hover:border-black dark:hover:border-dark-accent-primary bg-transparent dark:hover:shadow-glow-red',
   };
   
   // Width class

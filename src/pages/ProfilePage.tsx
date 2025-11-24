@@ -40,10 +40,10 @@ export const ProfilePage: FC = () => {
     <div className="w-full">
       {/* Breadcrumb */}
       <div className="container-custom py-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <a href="/" className="hover:text-black">Home</a>
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-dark-text-tertiary">
+          <a href="/" className="hover:text-black dark:hover:text-dark-text-primary transition-colors">Home</a>
           <span>/</span>
-          <span className="text-black">My Account</span>
+          <span className="text-black dark:text-dark-text-primary">My Account</span>
         </div>
       </div>
       
@@ -53,8 +53,8 @@ export const ProfilePage: FC = () => {
           {/* Welcome Header */}
           <div className="flex justify-between items-center mb-8">
             <div>
-              <span className="text-gray-600">Welcome! </span>
-              <span className="text-accent font-medium">Md Rimel</span>
+              <span className="text-gray-600 dark:text-dark-text-secondary">Welcome! </span>
+              <span className="text-accent dark:text-dark-accent-primary font-medium">Md Rimel</span>
             </div>
           </div>
           
@@ -64,14 +64,16 @@ export const ProfilePage: FC = () => {
               <nav className="space-y-6">
                 {/* Manage My Account Section */}
                 <div>
-                  <h3 className="font-semibold mb-3">Manage My Account</h3>
+                  <h3 className="font-semibold mb-3 text-gray-900 dark:text-dark-text-primary">Manage My Account</h3>
                   <ul className="space-y-2 text-sm">
                     <li>
                       <NavLink
                         to="/profile"
                         className={({ isActive }) =>
                           `block py-1 transition-colors ${
-                            isActive ? 'text-accent' : 'text-gray-600 hover:text-black'
+                            isActive 
+                              ? 'text-accent dark:text-dark-accent-primary' 
+                              : 'text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary'
                           }`
                         }
                       >
@@ -81,7 +83,7 @@ export const ProfilePage: FC = () => {
                     <li>
                       <NavLink
                         to="/profile/address"
-                        className="block py-1 text-gray-600 hover:text-black transition-colors"
+                        className="block py-1 text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
                       >
                         Address Book
                       </NavLink>
@@ -89,7 +91,7 @@ export const ProfilePage: FC = () => {
                     <li>
                       <NavLink
                         to="/profile/payment"
-                        className="block py-1 text-gray-600 hover:text-black transition-colors"
+                        className="block py-1 text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
                       >
                         My Payment Options
                       </NavLink>
@@ -99,12 +101,12 @@ export const ProfilePage: FC = () => {
                 
                 {/* My Orders Section */}
                 <div>
-                  <h3 className="font-semibold mb-3">My Orders</h3>
+                  <h3 className="font-semibold mb-3 text-gray-900 dark:text-dark-text-primary">My Orders</h3>
                   <ul className="space-y-2 text-sm">
                     <li>
                       <NavLink
                         to="/profile/returns"
-                        className="block py-1 text-gray-600 hover:text-black transition-colors"
+                        className="block py-1 text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
                       >
                         My Returns
                       </NavLink>
@@ -112,30 +114,20 @@ export const ProfilePage: FC = () => {
                     <li>
                       <NavLink
                         to="/profile/cancellations"
-                        className="block py-1 text-gray-600 hover:text-black transition-colors"
+                        className="block py-1 text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
                       >
                         My Cancellations
                       </NavLink>
                     </li>
                   </ul>
                 </div>
-                
-                {/* My Wishlist Link */}
-                <div>
-                  <NavLink
-                    to="/wishlist"
-                    className="font-semibold hover:text-accent transition-colors"
-                  >
-                    My Wishlist
-                  </NavLink>
-                </div>
               </nav>
             </aside>
             
             {/* Main Content - Edit Profile Form */}
             <div className="lg:col-span-3">
-              <div className="bg-white shadow-lg rounded-lg p-8">
-                <h2 className="text-xl font-medium text-accent mb-6">Edit Your Profile</h2>
+              <div className="bg-white dark:bg-dark-bg-secondary shadow-lg dark:shadow-card-dark rounded-lg p-8 border border-transparent dark:border-dark-border-primary transition-colors duration-300">
+                <h2 className="text-xl font-medium text-accent dark:text-dark-accent-primary mb-6">Edit Your Profile</h2>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name Fields */}
@@ -179,7 +171,7 @@ export const ProfilePage: FC = () => {
                   
                   {/* Password Changes Section */}
                   <div className="pt-6">
-                    <h3 className="font-medium mb-4">Password Changes</h3>
+                    <h3 className="font-medium mb-4 text-gray-900 dark:text-dark-text-primary">Password Changes</h3>
                     <div className="space-y-4">
                       <Input
                         type="password"

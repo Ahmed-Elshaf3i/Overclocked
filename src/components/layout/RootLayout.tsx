@@ -2,9 +2,13 @@ import { FC } from 'react';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { ToastContainer } from '../ui/Toast';
+import { useToast } from '@/contexts/ToastContext';
 
 // Root Layout component - Wraps all pages with Header and Footer
 export const RootLayout: FC = () => {
+  const { toasts, removeToast } = useToast();
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-dark-bg-primary transition-colors duration-300">
       {/* Global Header */}
@@ -17,6 +21,9 @@ export const RootLayout: FC = () => {
       
       {/* Global Footer */}
       <Footer />
+      
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toasts} onClose={removeToast} />
       
       {/* Scroll Restoration - Scroll to top on route change */}
       <ScrollRestoration />

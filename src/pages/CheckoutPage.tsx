@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { BillingDetails, PaymentMethod } from '@/types';
+import { BillingDetails } from '@/types';
 
 // CheckoutPage component - Billing and payment page
 export const CheckoutPage: FC = () => {

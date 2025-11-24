@@ -74,10 +74,10 @@ export const AboutPage: FC = () => {
     <div className="w-full">
       {/* Breadcrumb */}
       <div className="container-custom py-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <a href="/" className="hover:text-black">Home</a>
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-dark-text-tertiary">
+          <a href="/" className="hover:text-black dark:hover:text-dark-text-primary transition-colors">Home</a>
           <span>/</span>
-          <span className="text-black">About</span>
+          <span className="text-black dark:text-dark-text-primary">About</span>
         </div>
       </div>
       
@@ -87,8 +87,8 @@ export const AboutPage: FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Story Content */}
             <div className="max-w-xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Story</h1>
-              <div className="space-y-4 text-gray-700">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-dark-text-primary">Our Story</h1>
+              <div className="space-y-4 text-gray-700 dark:text-dark-text-secondary">
                 <p>
                   Launched in 2015, Exclusive is South Asia's premier online shopping
                   marketplace with an active presence in Bangladesh. Supported by wide range
@@ -124,8 +124,8 @@ export const AboutPage: FC = () => {
                 key={stat.id}
                 className={`group relative border-2 rounded-lg p-4 sm:p-6 md:p-8 text-center transition-all hover:shadow-lg ${
                   stat.highlighted
-                    ? 'bg-accent border-accent text-white'
-                    : 'border-gray-300 hover:bg-accent hover:border-accent hover:text-white'
+                    ? 'bg-accent dark:bg-dark-accent-primary border-accent dark:border-dark-accent-primary text-white'
+                    : 'border-gray-300 dark:border-dark-border-primary hover:bg-accent dark:hover:bg-dark-accent-primary hover:border-accent dark:hover:border-dark-accent-primary hover:text-white'
                 }`}
               >
                 {/* Icon */}
@@ -166,7 +166,7 @@ export const AboutPage: FC = () => {
             {teamMembers.map((member) => (
               <div key={member.id} className="group">
                 {/* Member Image */}
-                <div className="bg-neutral-100 rounded-lg overflow-hidden mb-6">
+                <div className="bg-neutral-100 dark:bg-dark-bg-secondary rounded-lg overflow-hidden mb-6 border border-transparent dark:border-dark-border-primary">
                   <img
                     src={member.image}
                     alt={member.name}
@@ -176,15 +176,15 @@ export const AboutPage: FC = () => {
                 
                 {/* Member Info */}
                 <div>
-                  <h3 className="text-2xl font-semibold mb-1">{member.name}</h3>
-                  <p className="text-gray-600 mb-3">{member.role}</p>
+                  <h3 className="text-2xl font-semibold mb-1 text-gray-900 dark:text-dark-text-primary">{member.name}</h3>
+                  <p className="text-gray-600 dark:text-dark-text-tertiary mb-3">{member.role}</p>
                   
                   {/* Social Links */}
                   <div className="flex gap-3">
                     {member.social.twitter && (
                       <a
                         href={member.social.twitter}
-                        className="text-gray-600 hover:text-black transition-colors"
+                        className="text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
                         aria-label="Twitter"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -195,7 +195,7 @@ export const AboutPage: FC = () => {
                     {member.social.instagram && (
                       <a
                         href={member.social.instagram}
-                        className="text-gray-600 hover:text-black transition-colors"
+                        className="text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
                         aria-label="Instagram"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -206,7 +206,7 @@ export const AboutPage: FC = () => {
                     {member.social.linkedin && (
                       <a
                         href={member.social.linkedin}
-                        className="text-gray-600 hover:text-black transition-colors"
+                        className="text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
                         aria-label="LinkedIn"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

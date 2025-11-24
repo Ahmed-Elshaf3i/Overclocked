@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { HeartIcon, TruckIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { TruckIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/Button';
 import { Rating } from '@/components/ui/Rating';
 import { ProductCard } from '@/components/ui/ProductCard';
@@ -246,14 +246,6 @@ export const ProductDetailPage: FC = () => {
                 <Button variant="primary" onClick={handleAddToCart} className="px-12">
                   Buy Now
                 </Button>
-                
-                {/* Wishlist Button */}
-                <button
-                  className="p-3 border border-neutral-300 rounded hover:bg-neutral-100 transition-colors"
-                  aria-label="Add to wishlist"
-                >
-                  <HeartIcon className="w-6 h-6" />
-                </button>
               </div>
               
               {/* Delivery Info */}

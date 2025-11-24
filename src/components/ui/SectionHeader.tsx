@@ -19,13 +19,13 @@ export const SectionHeader: FC<SectionHeaderProps> = ({
         {/* Subtitle with red bar */}
         {subtitle && (
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-5 h-10 bg-accent rounded" />
-            <span className="text-accent font-semibold">{subtitle}</span>
+            <div className="w-5 h-10 bg-accent dark:bg-dark-accent-primary rounded shadow-md dark:shadow-glow-red" />
+            <span className="text-accent dark:text-dark-accent-primary font-semibold">{subtitle}</span>
           </div>
         )}
         
         {/* Main Title */}
-        <h2 className="text-3xl md:text-4xl font-bold text-black">{title}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-black dark:text-dark-text-primary transition-colors duration-300">{title}</h2>
       </div>
       
       {/* Optional Action (e.g., View All button) */}

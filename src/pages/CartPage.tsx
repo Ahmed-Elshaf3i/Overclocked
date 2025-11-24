@@ -3,39 +3,12 @@ import { Link } from 'react-router-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { CartItem } from '@/types';
+import { useCart } from '@/contexts/CartContext';
 
 // CartPage component - Shopping cart with table layout
 export const CartPage: FC = () => {
-  // Mock cart data (in real app, use React Query or state management)
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      product: {
-        id: '1',
-        name: 'LCD Monitor',
-        price: 650,
-        image: 'https://via.placeholder.com/100x100?text=Monitor',
-        rating: 5,
-        reviews: 99,
-        category: 'Electronics',
-        inStock: true,
-      },
-      quantity: 1,
-    },
-    {
-      product: {
-        id: '2',
-        name: 'H1 Gamepad',
-        price: 550,
-        image: 'https://via.placeholder.com/100x100?text=Gamepad',
-        rating: 4,
-        reviews: 88,
-        category: 'Gaming',
-        inStock: true,
-      },
-      quantity: 2,
-    },
-  ]);
+  // Use cart context
+  const { items: cartItems, updateQuantity, removeFromCart } = useCart();
   
   // Coupon code state
   const [couponCode, setCouponCode] = useState('');
@@ -48,16 +21,12 @@ export const CartPage: FC = () => {
   // Handle quantity change
   const handleQuantityChange = (productId: string, newQuantity: number): void => {
     if (newQuantity < 1) return;
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity: newQuantity } : item
-      )
-    );
+    updateQuantity(productId, newQuantity);
   };
   
   // Handle remove item
   const handleRemove = (productId: string): void => {
-    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+    removeFromCart(productId);
   };
   
   // Handle coupon apply

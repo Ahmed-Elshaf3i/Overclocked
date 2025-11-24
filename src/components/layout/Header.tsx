@@ -2,18 +2,21 @@ import { FC, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import {
   MagnifyingGlassIcon,
-  HeartIcon,
   ShoppingCartIcon,
   UserIcon,
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { useCart } from '@/contexts/CartContext';
 
 // Header component - Global navigation
 export const Header: FC = () => {
   // Mobile menu state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Cart context
+  const { getCartCount } = useCart();
   
   // Navigation links
   const navLinks = [
@@ -28,20 +31,13 @@ export const Header: FC = () => {
       {/* Top Bar - Promotional Banner */}
       <div className="bg-black dark:bg-dark-bg-primary text-white py-3 transition-colors duration-300">
         <div className="container-custom">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex-1" />
+          <div className="flex items-center justify-center text-sm">
             <p className="text-center">
               Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!{' '}
               <Link to="/" className="font-semibold underline ml-2 hover:text-gray-200 transition-colors">
                 ShopNow
               </Link>
             </p>
-            <div className="flex-1 flex justify-end">
-              <select className="bg-transparent text-white border-none outline-none cursor-pointer">
-                <option value="en" className="bg-black text-white">English</option>
-                <option value="ar" className="bg-black text-white">Arabic</option>
-              </select>
-            </div>
           </div>
         </div>
       </div>
@@ -92,18 +88,6 @@ export const Header: FC = () => {
               {/* Theme Toggle */}
               <ThemeToggle />
               
-              {/* Wishlist Icon */}
-              <Link
-                to="/wishlist"
-                className="relative p-2 hover:bg-neutral-100 dark:hover:bg-dark-bg-tertiary rounded-full transition-all duration-300 group"
-                aria-label="Wishlist"
-              >
-                <HeartIcon className="w-6 h-6 text-gray-900 dark:text-dark-text-primary transition-transform group-hover:scale-110" />
-                <span className="absolute -top-1 -right-1 bg-accent dark:bg-dark-accent-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md">
-                  4
-                </span>
-              </Link>
-              
               {/* Cart Icon */}
               <Link
                 to="/cart"
@@ -111,9 +95,11 @@ export const Header: FC = () => {
                 aria-label="Shopping Cart"
               >
                 <ShoppingCartIcon className="w-6 h-6 text-gray-900 dark:text-dark-text-primary transition-transform group-hover:scale-110" />
-                <span className="absolute -top-1 -right-1 bg-accent dark:bg-dark-accent-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md">
-                  2
-                </span>
+                {getCartCount() > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-accent dark:bg-dark-accent-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-pulse">
+                    {getCartCount()}
+                  </span>
+                )}
               </Link>
               
               {/* User Account Icon */}
