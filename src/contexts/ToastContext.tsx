@@ -27,7 +27,6 @@ export const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
     
     setToasts((prev) => [...prev, newToast]);
 
-    // Auto remove after 3 seconds
     setTimeout(() => {
       setToasts((prev) => prev.filter((toast) => toast.id !== id));
     }, 3000);

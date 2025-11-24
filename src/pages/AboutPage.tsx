@@ -2,9 +2,7 @@ import { FC } from 'react';
 import { ShoppingBagIcon, CurrencyDollarIcon, GiftIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { Statistic, TeamMember } from '@/types';
 
-// AboutPage component - About us page with story, statistics, and team
 export const AboutPage: FC = () => {
-  // Statistics data
   const statistics: Statistic[] = [
     {
       id: '1',
@@ -33,7 +31,6 @@ export const AboutPage: FC = () => {
     },
   ];
   
-  // Team members data
   const teamMembers: TeamMember[] = [
     {
       id: '1',

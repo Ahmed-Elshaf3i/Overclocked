@@ -3,40 +3,32 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-// SignUpPage component - Registration page with split layout
 export const SignUpPage: FC = () => {
-  // Form state
   const [credentials, setCredentials] = useState({
     name: '',
     emailOrPhone: '',
     password: '',
   });
   
-  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
   
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     console.log('Sign up:', credentials);
     alert('Account created successfully!');
-    // In real app: send to API
   };
   
-  // Handle Google Sign Up
   const handleGoogleSignUp = (): void => {
     alert('Sign up with Google');
-    // In real app: integrate Google OAuth
   };
   
   return (
     <div className="w-full min-h-[80vh] flex items-center">
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Image */}
           <div className="hidden lg:block">
             <img
               src="https://img.freepik.com/premium-photo/shopping-cart-full-with-empty-items-laptop-computer-style-dark-gray-crimson_577115-48869.jpg"
@@ -45,7 +37,6 @@ export const SignUpPage: FC = () => {
             />
           </div>
           
-          {/* Right Side - Sign Up Form */}
           <div className="max-w-md mx-auto w-full">
             <div className="mb-8">
               <h1 className="text-3xl font-semibold mb-3 text-gray-900 dark:text-dark-text-primary">Create an account</h1>
@@ -53,7 +44,6 @@ export const SignUpPage: FC = () => {
             </div>
             
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name Input */}
               <Input
                 type="text"
                 name="name"
@@ -63,7 +53,6 @@ export const SignUpPage: FC = () => {
                 required
               />
               
-              {/* Email or Phone Input */}
               <Input
                 type="text"
                 name="emailOrPhone"
@@ -73,7 +62,6 @@ export const SignUpPage: FC = () => {
                 required
               />
               
-              {/* Password Input */}
               <Input
                 type="password"
                 name="password"
@@ -83,12 +71,10 @@ export const SignUpPage: FC = () => {
                 required
               />
               
-              {/* Submit Button */}
               <Button type="submit" variant="primary" fullWidth>
                 Create Account
               </Button>
               
-              {/* Google Sign Up Button */}
               <button
                 type="button"
                 onClick={handleGoogleSignUp}
@@ -116,7 +102,6 @@ export const SignUpPage: FC = () => {
               </button>
             </form>
             
-            {/* Login Link */}
             <p className="text-center mt-8 text-gray-600 dark:text-dark-text-secondary">
               Already have account?{' '}
               <Link to="/signin" className="underline hover:no-underline ml-2 text-gray-900 dark:text-dark-text-primary transition-colors">

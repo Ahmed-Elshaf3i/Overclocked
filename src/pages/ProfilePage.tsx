@@ -3,9 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-// ProfilePage component - Account dashboard with sidebar navigation
 export const ProfilePage: FC = () => {
-  // Profile form state
   const [profileData, setProfileData] = useState({
     firstName: 'Md',
     lastName: 'Rimel',
@@ -16,23 +14,18 @@ export const ProfilePage: FC = () => {
     confirmPassword: '',
   });
   
-  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setProfileData((prev) => ({ ...prev, [name]: value }));
   };
   
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     console.log('Profile updated:', profileData);
     alert('Changes saved successfully!');
-    // In real app: send to API
   };
   
-  // Handle cancel
   const handleCancel = (): void => {
-    // Reset form or navigate away
     alert('Changes cancelled');
   };
   
@@ -59,10 +52,8 @@ export const ProfilePage: FC = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar Navigation */}
             <aside className="lg:col-span-1">
               <nav className="space-y-6">
-                {/* Manage My Account Section */}
                 <div>
                   <h3 className="font-semibold mb-3 text-gray-900 dark:text-dark-text-primary">Manage My Account</h3>
                   <ul className="space-y-2 text-sm">
@@ -99,7 +90,6 @@ export const ProfilePage: FC = () => {
                   </ul>
                 </div>
                 
-                {/* My Orders Section */}
                 <div>
                   <h3 className="font-semibold mb-3 text-gray-900 dark:text-dark-text-primary">My Orders</h3>
                   <ul className="space-y-2 text-sm">
@@ -124,13 +114,11 @@ export const ProfilePage: FC = () => {
               </nav>
             </aside>
             
-            {/* Main Content - Edit Profile Form */}
             <div className="lg:col-span-3">
               <div className="bg-white dark:bg-dark-bg-secondary shadow-lg dark:shadow-card-dark rounded-lg p-8 border border-transparent dark:border-dark-border-primary transition-colors duration-300">
                 <h2 className="text-xl font-medium text-accent dark:text-dark-accent-primary mb-6">Edit Your Profile</h2>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Name Fields */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Input
                       label="First Name"
@@ -150,7 +138,6 @@ export const ProfilePage: FC = () => {
                     />
                   </div>
                   
-                  {/* Email and Address */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Input
                       label="Email"
@@ -169,7 +156,6 @@ export const ProfilePage: FC = () => {
                     />
                   </div>
                   
-                  {/* Password Changes Section */}
                   <div className="pt-6">
                     <h3 className="font-medium mb-4 text-gray-900 dark:text-dark-text-primary">Password Changes</h3>
                     <div className="space-y-4">
@@ -197,7 +183,6 @@ export const ProfilePage: FC = () => {
                     </div>
                   </div>
                   
-                  {/* Action Buttons */}
                   <div className="flex justify-end gap-4 pt-4">
                     <Button type="button" variant="outline" onClick={handleCancel}>
                       Cancel

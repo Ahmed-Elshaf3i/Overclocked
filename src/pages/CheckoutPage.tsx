@@ -3,9 +3,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { BillingDetails } from '@/types';
 
-// CheckoutPage component - Billing and payment page
 export const CheckoutPage: FC = () => {
-  // Billing form state
   const [billingDetails, setBillingDetails] = useState<BillingDetails>({
     firstName: '',
     lastName: '',
@@ -18,13 +16,10 @@ export const CheckoutPage: FC = () => {
     saveInfo: false,
   });
   
-  // Payment method state
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card');
   
-  // Coupon code state
   const [couponCode, setCouponCode] = useState('');
   
-  // Mock cart items for summary
   const cartItems = [
     {
       id: '1',
@@ -40,12 +35,10 @@ export const CheckoutPage: FC = () => {
     },
   ];
   
-  // Calculate totals
   const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
-  const shipping = 0; // Free
+  const shipping = 0;
   const total = subtotal + shipping;
   
-  // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value, type, checked } = e.target;
     setBillingDetails((prev) => ({
@@ -54,12 +47,10 @@ export const CheckoutPage: FC = () => {
     }));
   };
   
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     console.log('Order placed:', { billingDetails, paymentMethod });
     alert('Order placed successfully!');
-    // In real app: send to API
   };
   
   return (
@@ -82,9 +73,7 @@ export const CheckoutPage: FC = () => {
           
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Billing Form - Left Side */}
               <div className="space-y-6">
-                {/* First Name */}
                 <Input
                   label="First Name*"
                   type="text"
@@ -94,7 +83,6 @@ export const CheckoutPage: FC = () => {
                   required
                 />
                 
-                {/* Company Name */}
                 <Input
                   label="Company Name"
                   type="text"
@@ -103,7 +91,6 @@ export const CheckoutPage: FC = () => {
                   onChange={handleInputChange}
                 />
                 
-                {/* Street Address */}
                 <Input
                   label="Street Address*"
                   type="text"
@@ -113,7 +100,6 @@ export const CheckoutPage: FC = () => {
                   required
                 />
                 
-                {/* Apartment */}
                 <Input
                   label="Apartment, floor, etc. (optional)"
                   type="text"
@@ -122,7 +108,6 @@ export const CheckoutPage: FC = () => {
                   onChange={handleInputChange}
                 />
                 
-                {/* Town/City */}
                 <Input
                   label="Town/City*"
                   type="text"
@@ -132,7 +117,6 @@ export const CheckoutPage: FC = () => {
                   required
                 />
                 
-                {/* Phone */}
                 <Input
                   label="Phone Number*"
                   type="tel"
@@ -142,7 +126,6 @@ export const CheckoutPage: FC = () => {
                   required
                 />
                 
-                {/* Email */}
                 <Input
                   label="Email Address*"
                   type="email"
@@ -152,7 +135,6 @@ export const CheckoutPage: FC = () => {
                   required
                 />
                 
-                {/* Save Info Checkbox */}
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
@@ -167,9 +149,7 @@ export const CheckoutPage: FC = () => {
                 </label>
               </div>
               
-              {/* Order Summary - Right Side */}
               <div>
-                {/* Product List */}
                 <div className="space-y-4 mb-6">
                   {cartItems.map((item) => (
                     <div key={item.id} className="flex items-center justify-between">
@@ -186,7 +166,6 @@ export const CheckoutPage: FC = () => {
                   ))}
                 </div>
                 
-                {/* Order Total */}
                 <div className="space-y-4 py-6 border-y border-neutral-200">
                   <div className="flex justify-between">
                     <span>Subtotal:</span>
@@ -202,11 +181,9 @@ export const CheckoutPage: FC = () => {
                   </div>
                 </div>
                 
-                {/* Payment Method */}
                 <div className="mt-6 space-y-4">
                   <h3 className="font-semibold mb-4">Payment Method</h3>
                   
-                  {/* Bank/Card Payment */}
                   <label className="flex items-center justify-between cursor-pointer p-4 border border-neutral-300 rounded hover:border-black transition-colors">
                     <div className="flex items-center gap-3">
                       <input
@@ -226,7 +203,6 @@ export const CheckoutPage: FC = () => {
                     </div>
                   </label>
                   
-                  {/* Cash on Delivery */}
                   <label className="flex items-center gap-3 cursor-pointer p-4 border border-neutral-300 rounded hover:border-black transition-colors">
                     <input
                       type="radio"
@@ -240,7 +216,6 @@ export const CheckoutPage: FC = () => {
                   </label>
                 </div>
                 
-                {/* Coupon Code */}
                 <div className="mt-6 flex gap-4">
                   <Input
                     type="text"
@@ -254,7 +229,6 @@ export const CheckoutPage: FC = () => {
                   </Button>
                 </div>
                 
-                {/* Place Order Button */}
                 <div className="mt-6">
                   <Button type="submit" variant="primary" fullWidth>
                     Place Order

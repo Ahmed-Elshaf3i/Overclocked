@@ -7,41 +7,32 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { CartProvider } from './contexts/CartContext';
 import { ToastProvider } from './contexts/ToastContext';
 
-// Create React Query client with default configuration
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes - data stays fresh
-      gcTime: 10 * 60 * 1000, // 10 minutes - garbage collection time (formerly cacheTime)
-      retry: 3, // Retry failed requests 3 times
-      refetchOnWindowFocus: false, // Disable auto-refetch on window focus
-      refetchOnReconnect: true, // Refetch on network reconnect
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+      retry: 3,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
     },
     mutations: {
-      retry: 1, // Retry failed mutations once
+      retry: 1,
       onError: (error) => {
-        // Global error handling for mutations
         console.error('Mutation error:', error);
       },
     },
   },
 });
 
-// Main App component - Root of the application
 export const App: FC = () => {
   return (
-    // Provide theme context to entire app
     <ThemeProvider>
-      {/* Provide toast context to entire app */}
       <ToastProvider>
-        {/* Provide cart context to entire app */}
         <CartProvider>
-          {/* Provide React Query client to entire app */}
           <QueryClientProvider client={queryClient}>
-            {/* Router Provider with all routes */}
             <RouterProvider router={router} />
             
-            {/* React Query DevTools - only in development */}
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </CartProvider>

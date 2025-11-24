@@ -7,12 +7,9 @@ import { ProductCard } from '@/components/ui/ProductCard';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Product } from '@/types';
 
-// ProductDetailPage component - Product detail with image gallery
 export const ProductDetailPage: FC = () => {
-  // Get product ID from URL params
   const { id } = useParams<{ id: string }>();
   
-  // Mock product data (in real app, fetch using React Query)
   const product: Product = {
     id: id || '1',
     name: 'Havic HV G-92 Gamepad',
@@ -34,13 +31,11 @@ export const ProductDetailPage: FC = () => {
     inStock: true,
   };
   
-  // State for selected image, color, size, quantity
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || '');
   const [selectedSize, setSelectedSize] = useState('M');
   const [quantity, setQuantity] = useState(1);
   
-  // Related products
   const relatedProducts: Product[] = [
     {
       id: '2',
@@ -88,7 +83,6 @@ export const ProductDetailPage: FC = () => {
     },
   ];
   
-  // Handle add to cart
   const handleAddToCart = (): void => {
     console.log('Added to cart:', { product, selectedColor, selectedSize, quantity });
     alert('Product added to cart!');
@@ -111,9 +105,7 @@ export const ProductDetailPage: FC = () => {
       <section className="py-8">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Left Side - Image Gallery */}
             <div className="flex gap-4">
-              {/* Thumbnail Images */}
               <div className="flex flex-col gap-4">
                 {product.images?.map((img, index) => (
                   <button
@@ -132,7 +124,6 @@ export const ProductDetailPage: FC = () => {
                 ))}
               </div>
               
-              {/* Main Image */}
               <div className="flex-1 bg-neutral-100 rounded-lg overflow-hidden aspect-square">
                 <img
                   src={product.images?.[selectedImage] || product.image}
@@ -142,12 +133,9 @@ export const ProductDetailPage: FC = () => {
               </div>
             </div>
             
-            {/* Right Side - Product Info */}
             <div>
-              {/* Product Title */}
               <h1 className="text-3xl font-semibold mb-3">{product.name}</h1>
               
-              {/* Rating & Stock */}
               <div className="flex items-center gap-4 mb-4">
                 <Rating rating={product.rating} reviews={product.reviews} />
                 <span className="text-gray-400">|</span>
@@ -156,7 +144,6 @@ export const ProductDetailPage: FC = () => {
                 </span>
               </div>
               
-              {/* Price */}
               <div className="flex items-center gap-3 mb-6">
                 <span className="text-3xl font-semibold">${product.price}</span>
                 {product.originalPrice && (
@@ -166,12 +153,10 @@ export const ProductDetailPage: FC = () => {
                 )}
               </div>
               
-              {/* Description */}
               <p className="text-gray-700 mb-6 pb-6 border-b border-neutral-200">
                 {product.description}
               </p>
               
-              {/* Color Selection */}
               {product.colors && product.colors.length > 0 && (
                 <div className="mb-6">
                   <div className="flex items-center gap-3 mb-3">
@@ -193,7 +178,6 @@ export const ProductDetailPage: FC = () => {
                 </div>
               )}
               
-              {/* Size Selection */}
               {product.sizes && product.sizes.length > 0 && (
                 <div className="mb-6">
                   <div className="flex items-center gap-3 mb-3">
@@ -217,9 +201,7 @@ export const ProductDetailPage: FC = () => {
                 </div>
               )}
               
-              {/* Quantity & Buy Actions */}
               <div className="flex flex-wrap gap-4 mb-6">
-                {/* Quantity Selector */}
                 <div className="flex items-center border border-neutral-300 rounded">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -242,13 +224,11 @@ export const ProductDetailPage: FC = () => {
                   </button>
                 </div>
                 
-                {/* Buy Now Button */}
                 <Button variant="primary" onClick={handleAddToCart} className="px-12">
                   Buy Now
                 </Button>
               </div>
               
-              {/* Delivery Info */}
               <div className="border border-neutral-300 rounded-lg overflow-hidden">
                 <div className="p-4 border-b border-neutral-300">
                   <div className="flex items-center gap-3">
@@ -278,7 +258,6 @@ export const ProductDetailPage: FC = () => {
         </div>
       </section>
       
-      {/* Related Items Section */}
       <section className="py-16">
         <div className="container-custom">
           <SectionHeader subtitle="Related Item" title="" />

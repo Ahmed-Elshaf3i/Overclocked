@@ -11,7 +11,6 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { Button } from "@/components/ui/Button";
 import { Product } from "@/types";
 
-// Carousel slide interface
 interface CarouselSlide {
   id: number;
   title: string;
@@ -22,12 +21,9 @@ interface CarouselSlide {
   link: string;
 }
 
-// HomePage component - Main landing page
 export const HomePage: FC = () => {
-  // Carousel state
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Countdown timer state for Flash Sales
   const [flashSaleTime, setFlashSaleTime] = useState({
     days: 3,
     hours: 23,
@@ -35,7 +31,6 @@ export const HomePage: FC = () => {
     seconds: 56,
   });
 
-  // Countdown timer state for Promotional Banner
   const [promoTime, setPromoTime] = useState({
     hours: 23,
     days: 5,
@@ -43,7 +38,6 @@ export const HomePage: FC = () => {
     seconds: 35,
   });
 
-  // Carousel slides data
   const carouselSlides: CarouselSlide[] = [
     {
       id: 1,
@@ -97,7 +91,6 @@ export const HomePage: FC = () => {
     },
   ];
 
-  // Auto-rotate carousel every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
@@ -106,32 +99,26 @@ export const HomePage: FC = () => {
     return () => clearInterval(interval);
   }, [carouselSlides.length]);
 
-  // Flash Sale Countdown Timer - Updates every second
   useEffect(() => {
     const interval = setInterval(() => {
       setFlashSaleTime((prev) => {
         let { days, hours, minutes, seconds } = prev;
 
-        // Decrement seconds
         if (seconds > 0) {
           seconds--;
         } else {
           seconds = 59;
-          // Decrement minutes
           if (minutes > 0) {
             minutes--;
           } else {
             minutes = 59;
-            // Decrement hours
             if (hours > 0) {
               hours--;
             } else {
               hours = 23;
-              // Decrement days
               if (days > 0) {
                 days--;
               } else {
-                // Timer ended - reset or stop
                 clearInterval(interval);
                 return { days: 0, hours: 0, minutes: 0, seconds: 0 };
               }
@@ -146,32 +133,26 @@ export const HomePage: FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Promotional Banner Countdown Timer - Updates every second
   useEffect(() => {
     const interval = setInterval(() => {
       setPromoTime((prev) => {
         let { days, hours, minutes, seconds } = prev;
 
-        // Decrement seconds
         if (seconds > 0) {
           seconds--;
         } else {
           seconds = 59;
-          // Decrement minutes
           if (minutes > 0) {
             minutes--;
           } else {
             minutes = 59;
-            // Decrement hours
             if (hours > 0) {
               hours--;
             } else {
               hours = 23;
-              // Decrement days
               if (days > 0) {
                 days--;
               } else {
-                // Timer ended - reset or stop
                 clearInterval(interval);
                 return { days: 0, hours: 0, minutes: 0, seconds: 0 };
               }
@@ -186,7 +167,6 @@ export const HomePage: FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Navigation handlers
   const goToSlide = (index: number): void => {
     setCurrentSlide(index);
   };
@@ -201,7 +181,6 @@ export const HomePage: FC = () => {
     setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
   };
 
-  // Mock product data (in real app, fetch from API using React Query)
   const flashSaleProducts: Product[] = [
     {
       id: "1",
@@ -257,7 +236,6 @@ export const HomePage: FC = () => {
     },
   ];
 
-  // Best selling products
   const bestSellingProducts: Product[] = [
     {
       id: "5",
@@ -306,7 +284,6 @@ export const HomePage: FC = () => {
     },
   ];
 
-  // Explore products
   const exploreProducts: Product[] = [
     {
       id: "9",

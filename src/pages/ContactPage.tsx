@@ -3,9 +3,7 @@ import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-// ContactPage component - Contact page with support info and form
 export const ContactPage: FC = () => {
-  // Form state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,17 +11,14 @@ export const ContactPage: FC = () => {
     message: '',
   });
   
-  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    // In real app: send data to API
     alert('Message sent successfully!');
     setFormData({ name: '', email: '', phone: '', message: '' });
   };

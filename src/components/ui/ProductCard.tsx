@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { EyeIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import { Product } from '@/types';
 import { Badge } from './Badge';
@@ -10,13 +10,11 @@ import { useToast } from '@/contexts/ToastContext';
 // ProductCard component props interface
 interface ProductCardProps {
   product: Product;
-  onQuickView?: (productId: string) => void;
 }
 
 // Reusable Product Card component
 export const ProductCard: FC<ProductCardProps> = ({
   product,
-  onQuickView,
 }) => {
   // Use cart context
   const { addToCart } = useCart();
@@ -52,18 +50,6 @@ export const ProductCard: FC<ProductCardProps> = ({
             <Badge variant="discount">-{discountPercent}%</Badge>
           )}
           {product.isNew && <Badge variant="new">NEW</Badge>}
-        </div>
-        
-        {/* Action Icons - Top Right */}
-        <div className="absolute top-3 right-3 flex flex-col gap-2">
-          {/* Quick View Button */}
-          <button
-            onClick={() => onQuickView?.(product.id)}
-            className="w-8 h-8 bg-white dark:bg-dark-bg-elevated rounded-full flex items-center justify-center hover:bg-accent dark:hover:bg-dark-accent-primary hover:text-white transition-all duration-300 shadow-md dark:shadow-glow-subtle"
-            aria-label="Quick view"
-          >
-            <EyeIcon className="w-5 h-5 text-gray-900 dark:text-dark-text-primary" />
-          </button>
         </div>
         
         {/* Add to Cart Button - Appears on Hover */}

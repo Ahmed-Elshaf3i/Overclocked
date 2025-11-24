@@ -2,13 +2,11 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
-// Footer component - Global footer with links and newsletter
 export const Footer: FC = () => {
   return (
     <footer className="bg-black dark:bg-dark-bg-primary text-white transition-colors duration-300 border-t border-neutral-800 dark:border-dark-border-primary">
       <div className="container-custom py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* Subscribe Section */}
           <div className="lg:col-span-1">
             <h3 className="text-xl font-bold mb-4">Exclusive</h3>
             <p className="text-sm mb-4">Subscribe</p>
@@ -16,7 +14,6 @@ export const Footer: FC = () => {
               Get 10% off your first order
             </p>
 
-            {/* Email Subscription Form */}
             <div className="relative">
               <input
                 type="email"
@@ -32,7 +29,6 @@ export const Footer: FC = () => {
             </div>
           </div>
 
-          {/* Support Section */}
           <div>
             <h4 className="font-semibold mb-4 text-white dark:text-dark-text-primary">
               Support
@@ -48,7 +44,6 @@ export const Footer: FC = () => {
             </ul>
           </div>
 
-          {/* Account Section */}
           <div>
             <h4 className="font-semibold mb-4 text-white dark:text-dark-text-primary">
               Account
@@ -89,7 +84,6 @@ export const Footer: FC = () => {
             </ul>
           </div>
 
-          {/* Quick Link Section */}
           <div>
             <h4 className="font-semibold mb-4 text-white dark:text-dark-text-primary">
               Quick Link
@@ -130,7 +124,6 @@ export const Footer: FC = () => {
             </ul>
           </div>
 
-          {/* Download App Section */}
           <div>
             <h4 className="font-semibold mb-4 text-white dark:text-dark-text-primary">
               Download App
@@ -139,12 +132,9 @@ export const Footer: FC = () => {
               Save $3 with App New User Only
             </p>
 
-            {/* QR Code and Store Badges */}
             <div className="flex gap-3 mb-4">
-              {/* QR Code */}
               <div className="w-20 h-20 bg-white dark:bg-dark-bg-secondary rounded-lg flex items-center justify-center border-2 border-gray-300 dark:border-dark-border-primary transition-all duration-300 hover:scale-105 hover:shadow-lg p-2">
                 <div className="w-full h-full grid grid-cols-3 grid-rows-3 gap-[2px]">
-                  {/* QR Code Pattern */}
                   {[...Array(9)].map((_, i) => (
                     <div
                       key={i}
@@ -160,7 +150,6 @@ export const Footer: FC = () => {
 
               {/* App Store Badges */}
               <div className="flex flex-col gap-2">
-                {/* Google Play Badge */}
                 <a
                   href="https://play.google.com"
                   target="_blank"
@@ -169,7 +158,6 @@ export const Footer: FC = () => {
                   aria-label="Download on Google Play"
                 >
                   <div className="flex items-center gap-2">
-                    {/* Google Play Icon */}
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
                       <path
                         d="M3 20.5V3.5C3 2.91 3.34 2.39 3.84 2.15L13.69 12L3.84 21.85C3.34 21.6 3 21.09 3 20.5M16.81 15.12L6.05 21.34L14.54 12.85L16.81 15.12M20.16 10.81C20.5 11.08 20.75 11.5 20.75 12C20.75 12.5 20.53 12.9 20.18 13.18L17.89 14.5L15.39 12L17.89 9.5L20.16 10.81M6.05 2.66L16.81 8.88L14.54 11.15L6.05 2.66Z"
@@ -188,7 +176,6 @@ export const Footer: FC = () => {
                   </div>
                 </a>
 
-                {/* App Store Badge */}
                 <a
                   href="https://www.apple.com/app-store"
                   target="_blank"
@@ -197,7 +184,6 @@ export const Footer: FC = () => {
                   aria-label="Download on the App Store"
                 >
                   <div className="flex items-center gap-2">
-                    {/* Apple Icon */}
                     <svg
                       className="w-5 h-5"
                       viewBox="0 0 24 24"
@@ -221,7 +207,6 @@ export const Footer: FC = () => {
               </div>
             </div>
 
-            {/* Social Media Links */}
             <div className="flex gap-4">
               <a
                 href="#"
@@ -280,7 +265,6 @@ export const Footer: FC = () => {
         </div>
       </div>
 
-      {/* Copyright Bar */}
       <div className="border-t border-neutral-800 dark:border-dark-border-primary py-4 bg-black/50 dark:bg-dark-bg-secondary/50">
         <div className="container-custom">
           <p className="text-center text-sm text-gray-500 dark:text-dark-text-muted">
