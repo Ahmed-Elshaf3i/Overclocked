@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Product } from '@/types';
 import productsData from '@/data/products.json';
+import { TIMING, PRODUCT_LIMITS } from '@/constants';
 
 export const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -11,7 +12,7 @@ export const useProducts = () => {
     setTimeout(() => {
       setProducts(productsData as Product[]);
       setLoading(false);
-    }, 100);
+    }, TIMING.LOADING_SIMULATION_DELAY);
   }, []); // ✅ Empty array - runs only once
 
   // ✅ Wrap all functions with useCallback to prevent recreation
@@ -30,7 +31,7 @@ export const useProducts = () => {
   }, [products]);
 
   // Get related products (same category, excluding current product)
-  const getRelatedProducts = useCallback((productId: string, limit: number = 4): Product[] => {
+  const getRelatedProducts = useCallback((productId: string, limit: number = PRODUCT_LIMITS.RELATED): Product[] => {
     const currentProduct = products.find((product) => product.id === productId);
     if (!currentProduct) return [];
 
@@ -44,7 +45,7 @@ export const useProducts = () => {
   }, [products]);
 
   // Get flash sale products (products with highest discount percentage)
-  const getFlashSaleProducts = useCallback((limit: number = 4): Product[] => {
+  const getFlashSaleProducts = useCallback((limit: number = PRODUCT_LIMITS.FLASH_SALE): Product[] => {
     return products
       .filter((product) => product.originalPrice && product.originalPrice > product.price)
       .sort((a, b) => {
@@ -60,7 +61,7 @@ export const useProducts = () => {
   }, [products]);
 
   // Get best selling products (highest number of reviews)
-  const getBestSellingProducts = useCallback((limit: number = 4): Product[] => {
+  const getBestSellingProducts = useCallback((limit: number = PRODUCT_LIMITS.BEST_SELLING): Product[] => {
     return products
       .filter((product) => product.reviews > 0)
       .sort((a, b) => b.reviews - a.reviews)
@@ -68,7 +69,7 @@ export const useProducts = () => {
   }, [products]);
 
   // Get products to explore (mix of different categories)
-  const getExploreProducts = useCallback((limit: number = 8): Product[] => {
+  const getExploreProducts = useCallback((limit: number = PRODUCT_LIMITS.EXPLORE): Product[] => {
     // Get diverse products from different categories
     const categories = Array.from(new Set(products.map((p) => p.category)));
     const exploreProducts: Product[] = [];

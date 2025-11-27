@@ -1,9 +1,33 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { useToast } from '@/contexts/ToastContext';
 
 // Footer component - Global footer with links and newsletter
 export const Footer: FC = () => {
+  const [email, setEmail] = useState('');
+  const { showToast } = useToast();
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email.trim()) {
+      showToast('Please enter your email address', 'error');
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showToast('Please enter a valid email address', 'error');
+      return;
+    }
+
+    // Success - Show message and clear input
+    showToast('🎉 Successfully subscribed! Check your email for your 10% discount code.', 'success');
+    setEmail('');
+  };
+
   return (
     <footer className="bg-black dark:bg-dark-bg-primary text-white transition-colors duration-300 border-t border-neutral-800 dark:border-dark-border-primary">
       <div className="container-custom py-16">
@@ -17,19 +41,22 @@ export const Footer: FC = () => {
             </p>
             
             {/* Email Subscription Form */}
-            <div className="relative">
+            <form onSubmit={handleSubscribe} className="relative">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full bg-transparent border border-white dark:border-dark-border-primary rounded-lg px-4 py-3 pr-12 text-sm text-white placeholder-gray-400 dark:placeholder-dark-text-muted focus:outline-none focus:border-accent dark:focus:border-dark-accent-primary transition-all duration-300 focus:ring-2 focus:ring-accent/20 dark:focus:ring-dark-accent-primary/20"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-black/30 dark:bg-dark-bg-secondary border-2 border-white/50 dark:border-dark-border-primary rounded-lg px-4 py-3 pr-12 text-sm text-white dark:text-dark-text-primary placeholder-gray-400 dark:placeholder-dark-text-muted focus:outline-none focus:border-white dark:focus:border-dark-accent-primary focus:bg-black/50 dark:focus:bg-dark-bg-elevated transition-all duration-300 focus:ring-2 focus:ring-white/20 dark:focus:ring-dark-accent-primary/30 hover:border-white/70 dark:hover:border-dark-border-secondary"
               />
               <button
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:text-accent dark:hover:text-dark-accent-primary transition-all duration-300 hover:scale-110"
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white dark:text-dark-text-primary hover:text-accent dark:hover:text-dark-accent-primary transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/50 dark:focus:ring-dark-accent-primary/50 rounded"
                 aria-label="Subscribe"
               >
                 <PaperAirplaneIcon className="w-5 h-5" />
               </button>
-            </div>
+            </form>
           </div>
           
           {/* Support Section */}

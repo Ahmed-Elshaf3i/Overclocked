@@ -1,11 +1,7 @@
 // src/context/CartContext.tsx
-import { createContext, useContext, useState, FC, ReactNode } from 'react';
-import { Product } from '@/types';
-
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
+import { createContext, useContext, useState, FC, ReactNode, useEffect } from 'react';
+import { Product, CartItem } from '@/types';
+import { STORAGE_KEYS } from '@/constants';
 
 interface CartContextType {
   cartItems: CartItem[];
@@ -24,7 +20,25 @@ export const useCart = () => {
 };
 
 export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  // Initialize cart from localStorage
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.CART);
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error('Error loading cart:', error);
+      return [];
+    }
+  });
+
+  // Save to localStorage whenever cart changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Error saving cart:', error);
+    }
+  }, [cartItems]);
 
   const addToCart = (product: Product, quantity = 1) => {
     setCartItems((prev) => {

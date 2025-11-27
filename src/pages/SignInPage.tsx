@@ -1,10 +1,14 @@
 import { FC, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { useToast } from '@/contexts/ToastContext';
 
 // SignInPage component - Login page with split layout
 export const SignInPage: FC = () => {
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+  
   // Form state
   const [credentials, setCredentials] = useState({
     emailOrPhone: '',
@@ -20,9 +24,20 @@ export const SignInPage: FC = () => {
   // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!credentials.emailOrPhone || !credentials.password) {
+      showToast('Please fill in all fields', 'error');
+      return;
+    }
+    
     console.log('Login:', credentials);
-    alert('Login successful!');
-    // In real app: authenticate with API
+    showToast('Login successful!', 'success');
+    
+    // Redirect to home page after successful login
+    setTimeout(() => {
+      navigate('/');
+    }, 1500);
   };
   
   return (

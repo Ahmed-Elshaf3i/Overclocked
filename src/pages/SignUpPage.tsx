@@ -1,10 +1,15 @@
 import { FC, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { useToast } from '@/contexts/ToastContext';
 
 // SignUpPage component - Registration page with split layout
 export const SignUpPage: FC = () => {
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   // Form state
   const [credentials, setCredentials] = useState({
     name: '',
@@ -18,17 +23,68 @@ export const SignUpPage: FC = () => {
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
   
+  // Validate password
+  const validatePassword = (password: string): boolean => {
+    if (password.length < 8) {
+      showToast('Password must be at least 8 characters long', 'error');
+      return false;
+    }
+    return true;
+  };
+  
+  // Validate email or phone
+  const validateEmailOrPhone = (value: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+    
+    if (!emailRegex.test(value) && !phoneRegex.test(value)) {
+      showToast('Please enter a valid email or phone number', 'error');
+      return false;
+    }
+    return true;
+  };
+  
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    console.log('Sign up:', credentials);
-    alert('Account created successfully!');
-    // In real app: send to API
+    
+    // Validation
+    if (!credentials.name.trim()) {
+      showToast('Please enter your name', 'error');
+      return;
+    }
+    
+    if (!validateEmailOrPhone(credentials.emailOrPhone)) {
+      return;
+    }
+    
+    if (!validatePassword(credentials.password)) {
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      console.log('Sign up:', credentials);
+      showToast('Account created successfully!', 'success');
+      
+      // Redirect to signin page
+      setTimeout(() => {
+        navigate('/signin');
+      }, 1500);
+    } catch (error) {
+      showToast('Failed to create account. Please try again.', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   // Handle Google Sign Up
   const handleGoogleSignUp = (): void => {
-    alert('Sign up with Google');
+    showToast('Google Sign Up - Coming Soon!', 'info');
     // In real app: integrate Google OAuth
   };
   
@@ -84,8 +140,8 @@ export const SignUpPage: FC = () => {
               />
               
               {/* Submit Button */}
-              <Button type="submit" variant="primary" fullWidth>
-                Create Account
+              <Button type="submit" variant="primary" fullWidth disabled={isSubmitting}>
+                {isSubmitting ? 'Creating Account...' : 'Create Account'}
               </Button>
               
               {/* Google Sign Up Button */}

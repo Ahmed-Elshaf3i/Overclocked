@@ -1,4 +1,5 @@
 import { createContext, FC, ReactNode, useEffect, useState } from 'react';
+import { STORAGE_KEYS } from '@/constants';
 
 // Theme type definition
 export type Theme = 'light' | 'dark';
@@ -23,7 +24,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   // Initialize theme from localStorage or system preference
   const [theme, setThemeState] = useState<Theme>(() => {
     // Check localStorage first
-    const savedTheme = localStorage.getItem('theme') as Theme | null;
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as Theme | null;
     if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
       return savedTheme;
     }
@@ -47,7 +48,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     root.classList.add(theme);
     
     // Save to localStorage
-    localStorage.setItem('theme', theme);
+    localStorage.setItem(STORAGE_KEYS.THEME, theme);
   }, [theme]);
 
   // Toggle between light and dark

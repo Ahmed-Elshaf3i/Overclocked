@@ -1,6 +1,9 @@
 import { FC, useState, useMemo } from "react";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/contexts/ToastContext";
 import {
   FunnelIcon,
   MagnifyingGlassIcon,
@@ -8,10 +11,40 @@ import {
 
 export const ProductsPage: FC = () => {
   const { products, loading } = useProducts();
+  const { addToWishlist, isInWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const { showToast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("default");
   const [priceRange, setPriceRange] = useState<string>("all");
+  
+  // Handle wishlist toggle
+  const handleWishlistToggle = (productId: string) => {
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      if (isInWishlist(productId)) {
+        showToast('Product already in wishlist', 'info');
+      } else {
+        addToWishlist(product);
+        showToast(`${product.name} added to wishlist!`, 'success');
+      }
+    }
+  };
+  
+  // Handle add to cart
+  const handleAddToCart = (productId: string) => {
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      addToCart(product, 1);
+      showToast(`${product.name} added to cart!`, 'success');
+    }
+  };
+  
+  // Handle quick view
+  const handleQuickView = (_productId: string) => {
+    showToast('Quick view - Coming Soon!', 'info');
+  };
 
   // Get unique categories
   const categories = useMemo(() => {
@@ -90,28 +123,28 @@ export const ProductsPage: FC = () => {
   return (
     <div className="w-full min-h-screen">
       {/* Header */}
-      <div className="border-b border-neutral-200">
+      <div className="border-b border-neutral-200 dark:border-dark-border-primary">
         <div className="container-custom py-12">
-          <h1 className="text-4xl font-bold mb-2">All Products</h1>
-          <p className="text-gray-600">
+          <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-dark-text-primary">All Products</h1>
+          <p className="text-gray-600 dark:text-dark-text-secondary">
             Discover our complete collection of {products.length} products
           </p>
         </div>
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white border-b border-neutral-200 sticky top-0 z-10 shadow-sm">
+      <div className="bg-white dark:bg-dark-bg-secondary border-b border-neutral-200 dark:border-dark-border-primary sticky top-0 z-10 shadow-sm dark:shadow-card-dark">
         <div className="container-custom py-6">
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
             {/* Search Bar */}
             <div className="relative flex-1 max-w-md w-full">
-              <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-dark-text-muted" />
               <input
                 type="text"
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2.5 border border-neutral-200 dark:border-dark-border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent-primary focus:border-transparent bg-white dark:bg-dark-bg-tertiary text-gray-900 dark:text-dark-text-primary placeholder:text-gray-400 dark:placeholder:text-dark-text-muted transition-all duration-300"
               />
             </div>
 
@@ -128,7 +161,7 @@ export const ProductsPage: FC = () => {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent text-sm bg-white cursor-pointer hover:border-gray-300 transition-colors"
+                className="px-4 py-2.5 border border-neutral-200 dark:border-dark-border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent-primary text-sm bg-white dark:bg-dark-bg-tertiary text-gray-900 dark:text-dark-text-primary cursor-pointer hover:border-gray-300 dark:hover:border-dark-border-secondary transition-all duration-300"
               >
                 {categories.map((category) => (
                   <option key={category} value={category}>
@@ -143,7 +176,7 @@ export const ProductsPage: FC = () => {
               <select
                 value={priceRange}
                 onChange={(e) => setPriceRange(e.target.value)}
-                className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent text-sm bg-white cursor-pointer hover:border-gray-300 transition-colors"
+                className="px-4 py-2.5 border border-neutral-200 dark:border-dark-border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent-primary text-sm bg-white dark:bg-dark-bg-tertiary text-gray-900 dark:text-dark-text-primary cursor-pointer hover:border-gray-300 dark:hover:border-dark-border-secondary transition-all duration-300"
               >
                 <option value="all">All Prices</option>
                 <option value="0-50">$0 - $50</option>
@@ -156,7 +189,7 @@ export const ProductsPage: FC = () => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent text-sm bg-white cursor-pointer hover:border-gray-300 transition-colors"
+                className="px-4 py-2.5 border border-neutral-200 dark:border-dark-border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent-primary text-sm bg-white dark:bg-dark-bg-tertiary text-gray-900 dark:text-dark-text-primary cursor-pointer hover:border-gray-300 dark:hover:border-dark-border-secondary transition-all duration-300"
               >
                 <option value="default">Sort By: Default</option>
                 <option value="price-low">Price: Low to High</option>
@@ -246,7 +279,14 @@ export const ProductsPage: FC = () => {
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard 
+                key={product.id} 
+                product={product}
+                onAddToWishlist={handleWishlistToggle}
+                onAddToCart={handleAddToCart}
+                onQuickView={handleQuickView}
+                isInWishlist={isInWishlist(product.id)}
+              />
             ))}
           </div>
         ) : (

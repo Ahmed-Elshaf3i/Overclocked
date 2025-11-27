@@ -14,8 +14,8 @@ interface BadgeProps {
 export const Badge: FC<BadgeProps> = ({ variant, children, className = '' }) => {
   // Variant-specific classes
   const variantClasses = {
-    discount: 'bg-accent text-white',
-    new: 'bg-success text-white',
+    discount: 'bg-accent dark:bg-dark-accent-primary text-white shadow-md dark:shadow-glow-subtle',
+    new: 'bg-success dark:bg-dark-accent-success text-white shadow-md dark:shadow-glow-subtle',
   };
   
   return (

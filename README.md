@@ -1,38 +1,91 @@
-<<<<<<< HEAD
-# React + Vite
+# Overclocked - Premium E-Commerce Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A next-generation e-commerce platform for electronics and smart devices. Built with React, TypeScript, and modern web technologies.
 
-Currently, two official plugins are available:
+## 👥 Team Members
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Ahmed elshafei
+- Abdelrahman amr
+- Zyad ayman
+- Ebraam ashraf
+- Seif atef
 
-## React Compiler
+## 📖 Project Description
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+**Overclocked** is a next-generation e-commerce platform for electronics and smart devices. Built to deliver speed, trust, and innovation, it connects customers with the latest tech and vendors with powerful tools. More than a store, it's a digital hub redefining how electronics are bought and sold.
 
-Note: This will impact Vite dev & build performances.
+## 🎯 Objectives
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
-members:
-Ahmed elshafei 
-Abdelrahman amr
-Zyad ayman
-Ebraam ashraf
-Seif atef
-
-project name: Overclocked
-
-Description:
-Overclocked is a next-generation e-commerce platform for electronics and smart devices. Built to deliver speed, trust, and innovation, it connects customers with the latest tech and vendors with powerful tools. More than a store, it’s a digital hub redefining how electronics are bought and sold.
-
-objective:
 To build a scalable and innovative e-commerce platform dedicated to electronics, offering customers a seamless shopping experience and vendors powerful tools to grow their business, while establishing Overclocked as a trusted digital hub for technology enthusiasts.
 
+## ✨ Features
 
+- 🛍️ Product browsing with filters and search
+- 🛒 Shopping cart with real-time updates
+- ❤️ Wishlist functionality with persistence
+- 🌓 Dark/Light theme support
+- 📱 Fully responsive design
+- ⚡ Fast and optimized performance
+- 🔔 Toast notifications for user feedback
+- 💳 Checkout flow with multiple payment options
 
->>>>>>> 7ba733ac2412f77fb4051bf34fd47f23075ea1a8
+## 🚀 Tech Stack
+
+- **Frontend:** React 19 with TypeScript
+- **Routing:** React Router DOM v7
+- **State Management:** React Context API + React Query
+- **Styling:** Tailwind CSS + DaisyUI
+- **Build Tool:** Vite
+- **Icons:** Heroicons + React Icons
+
+## 📦 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/Exclusive-E-commerce.git
+
+# Navigate to project directory
+cd Exclusive-E-commerce
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## 🏗️ Project Structure
+
+```
+src/
+├── components/       # Reusable UI components
+│   ├── layout/      # Layout components (Header, Footer)
+│   └── ui/          # UI components (Button, Input, etc.)
+├── contexts/        # React Context providers
+├── hooks/           # Custom React hooks
+├── pages/           # Page components
+├── router/          # Routing configuration
+├── types/           # TypeScript type definitions
+└── data/            # Static data files
+```
+
+## 🛠️ Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## 📄 License
+
+This project is developed as part of an academic program.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow the existing code style and conventions.

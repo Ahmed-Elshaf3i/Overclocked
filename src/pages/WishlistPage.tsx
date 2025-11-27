@@ -1,124 +1,51 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { TrashIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { ProductCard } from '@/components/ui/ProductCard';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { Product } from '@/types';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useCart } from '@/contexts/CartContext';
+import { useToast } from '@/contexts/ToastContext';
+import { useProducts } from '@/hooks/useProducts';
 
 // WishlistPage component - Wishlist with product management
 export const WishlistPage: FC = () => {
-  // Mock wishlist data (in real app, use React Query)
-  const [wishlistItems, setWishlistItems] = useState<Product[]>([
-    {
-      id: '1',
-      name: 'Gucci duffle bag',
-      price: 960,
-      originalPrice: 1160,
-      discount: 35,
-      rating: 4.5,
-      reviews: 65,
-      image: 'https://via.placeholder.com/300x300?text=Bag',
-      category: 'Fashion',
-      inStock: true,
-    },
-    {
-      id: '2',
-      name: 'RGB liquid CPU Cooler',
-      price: 160,
-      originalPrice: 170,
-      rating: 4.5,
-      reviews: 65,
-      image: 'https://via.placeholder.com/300x300?text=Cooler',
-      category: 'Electronics',
-      inStock: true,
-    },
-    {
-      id: '3',
-      name: 'GP11 Shooter USB Gamepad',
-      price: 660,
-      rating: 4.5,
-      reviews: 55,
-      image: 'https://via.placeholder.com/300x300?text=Gamepad',
-      category: 'Gaming',
-      inStock: true,
-    },
-    {
-      id: '4',
-      name: 'Quilted Satin Jacket',
-      price: 660,
-      rating: 4.5,
-      reviews: 55,
-      image: 'https://via.placeholder.com/300x300?text=Jacket',
-      category: 'Fashion',
-      inStock: true,
-    },
-  ]);
+  const { wishlistItems, removeFromWishlist, clearWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const { showToast } = useToast();
+  const { getExploreProducts } = useProducts();
   
-  // Just For You products (recommendations)
-  const recommendedProducts: Product[] = [
-    {
-      id: '5',
-      name: 'ASUS FHD Gaming Laptop',
-      price: 700,
-      originalPrice: 1000,
-      discount: 35,
-      rating: 5,
-      reviews: 325,
-      image: 'https://via.placeholder.com/300x300?text=Laptop',
-      category: 'Electronics',
-      inStock: true,
-    },
-    {
-      id: '6',
-      name: 'IPS LCD Gaming Monitor',
-      price: 370,
-      originalPrice: 400,
-      rating: 5,
-      reviews: 99,
-      image: 'https://via.placeholder.com/300x300?text=Monitor',
-      category: 'Electronics',
-      inStock: true,
-    },
-    {
-      id: '7',
-      name: 'HAVIT HV-G92 Gamepad',
-      price: 120,
-      rating: 5,
-      reviews: 88,
-      image: 'https://via.placeholder.com/300x300?text=Gamepad',
-      category: 'Gaming',
-      inStock: true,
-      isNew: true,
-    },
-    {
-      id: '8',
-      name: 'AK-900 Wired Keyboard',
-      price: 960,
-      rating: 4,
-      reviews: 75,
-      image: 'https://via.placeholder.com/300x300?text=Keyboard',
-      category: 'Electronics',
-      inStock: true,
-    },
-  ];
+  // Get recommended products
+  const recommendedProducts = getExploreProducts(4);
   
   // Handle move all to cart
   const handleMoveAllToBag = (): void => {
-    console.log('Moving all items to bag');
-    alert('All items moved to cart!');
-    // In real app: add all items to cart
+    if (wishlistItems.length === 0) {
+      showToast('Your wishlist is empty', 'info');
+      return;
+    }
+    
+    wishlistItems.forEach((item) => {
+      addToCart(item.product, 1);
+    });
+    clearWishlist();
+    showToast('All items moved to cart!', 'success');
   };
   
   // Handle remove from wishlist
   const handleRemove = (productId: string): void => {
-    setWishlistItems((prev) => prev.filter((item) => item.id !== productId));
+    removeFromWishlist(productId);
+    showToast('Product removed from wishlist', 'success');
   };
   
   // Handle add to cart
   const handleAddToCart = (productId: string): void => {
-    console.log('Adding to cart:', productId);
-    alert('Product added to cart!');
-    // In real app: add to cart
+    const item = wishlistItems.find((w) => w.product.id === productId);
+    if (item) {
+      addToCart(item.product, 1);
+      showToast(`${item.product.name} added to cart!`, 'success');
+    }
   };
   
   return (
@@ -155,33 +82,33 @@ export const WishlistPage: FC = () => {
           ) : (
             /* Wishlist Product Grid */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-              {wishlistItems.map((product) => (
-                <div key={product.id} className="relative group">
+              {wishlistItems.map((item) => (
+                <div key={item.product.id} className="relative group">
                   {/* Product Card */}
                   <div className="bg-neutral-100 rounded overflow-hidden mb-4">
                     {/* Product Image */}
                     <div className="relative aspect-square overflow-hidden">
-                      <a href={`/product/${product.id}`}>
+                      <Link to={`/product/${item.product.id}`}>
                         <img
-                          src={product.image}
-                          alt={product.name}
+                          src={item.product.image}
+                          alt={item.product.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                      </a>
+                      </Link>
                       
                       {/* Discount Badge */}
-                      {product.discount && (
+                      {item.product.discount && (
                         <div className="absolute top-3 left-3">
                           <span className="bg-accent text-white text-xs font-semibold px-3 py-1 rounded">
-                            -{product.discount}%
+                            -{item.product.discount}%
                           </span>
                         </div>
                       )}
                       
                       {/* Remove Button */}
                       <button
-                        onClick={() => handleRemove(product.id)}
-                        className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+                        onClick={() => handleRemove(item.product.id)}
+                        className="absolute top-3 right-3 w-8 h-8 bg-white dark:bg-dark-bg-elevated rounded-full flex items-center justify-center text-gray-700 dark:text-dark-text-primary hover:bg-red-500 dark:hover:bg-dark-accent-error hover:text-white transition-all duration-300 shadow-md dark:shadow-glow-subtle hover:shadow-lg"
                         aria-label="Remove from wishlist"
                       >
                         <TrashIcon className="w-5 h-5" />
@@ -190,8 +117,8 @@ export const WishlistPage: FC = () => {
                     
                     {/* Add to Cart Button */}
                     <button
-                      onClick={() => handleAddToCart(product.id)}
-                      className="w-full bg-black text-white py-2 text-center hover:bg-neutral-800 transition-colors"
+                      onClick={() => handleAddToCart(item.product.id)}
+                      className="w-full bg-black dark:bg-dark-bg-elevated text-white py-2 text-center hover:bg-neutral-800 dark:hover:bg-dark-accent-primary transition-all duration-300"
                     >
                       Add To Cart
                     </button>
@@ -199,16 +126,16 @@ export const WishlistPage: FC = () => {
                   
                   {/* Product Info */}
                   <div>
-                    <a href={`/product/${product.id}`}>
+                    <Link to={`/product/${item.product.id}`}>
                       <h3 className="font-medium mb-2 hover:text-accent transition-colors">
-                        {product.name}
+                        {item.product.name}
                       </h3>
-                    </a>
+                    </Link>
                     <div className="flex items-center gap-3">
-                      <span className="text-accent font-semibold">${product.price}</span>
-                      {product.originalPrice && (
+                      <span className="text-accent font-semibold">${item.product.price}</span>
+                      {item.product.originalPrice && (
                         <span className="text-gray-500 line-through text-sm">
-                          ${product.originalPrice}
+                          ${item.product.originalPrice}
                         </span>
                       )}
                     </div>

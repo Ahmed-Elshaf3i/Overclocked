@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, ReactNode, FC } from 'react';
+import { TIMING } from '@/constants';
 
 export interface Toast {
   id: string;
@@ -29,7 +30,7 @@ export const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
 
     setTimeout(() => {
       setToasts((prev) => prev.filter((toast) => toast.id !== id));
-    }, 3000);
+    }, TIMING.TOAST_DURATION);
   }, []);
 
   const removeToast = useCallback((id: string) => {

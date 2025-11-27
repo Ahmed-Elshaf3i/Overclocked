@@ -1,10 +1,18 @@
 import { FC, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { BillingDetails, PaymentMethod } from '@/types';
+import { BillingDetails } from '@/types';
+import { useCart } from '@/contexts/CartContext';
+import { useToast } from '@/contexts/ToastContext';
+import { validateName, validateEmail, validatePhone, validateRequired } from '@/utils/validation';
 
 // CheckoutPage component - Billing and payment page
 export const CheckoutPage: FC = () => {
+  const navigate = useNavigate();
+  const { cartItems, clearCart } = useCart();
+  const { showToast } = useToast();
+  
   // Billing form state
   const [billingDetails, setBillingDetails] = useState<BillingDetails>({
     firstName: '',
@@ -18,30 +26,17 @@ export const CheckoutPage: FC = () => {
     saveInfo: false,
   });
   
+  // Validation errors state
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  
   // Payment method state
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card');
   
   // Coupon code state
   const [couponCode, setCouponCode] = useState('');
   
-  // Mock cart items for summary
-  const cartItems = [
-    {
-      id: '1',
-      name: 'LCD Monitor',
-      price: 650,
-      image: 'https://via.placeholder.com/60x60?text=Monitor',
-    },
-    {
-      id: '2',
-      name: 'H1 Gamepad',
-      price: 1100,
-      image: 'https://via.placeholder.com/60x60?text=Gamepad',
-    },
-  ];
-  
-  // Calculate totals
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+  // Calculate totals from actual cart
+  const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const shipping = 0; // Free
   const total = subtotal + shipping;
   
@@ -54,12 +49,80 @@ export const CheckoutPage: FC = () => {
     }));
   };
   
+  // Handle coupon apply
+  const handleApplyCoupon = (): void => {
+    if (couponCode) {
+      showToast(`Coupon "${couponCode}" applied successfully!`, 'success');
+      setCouponCode('');
+    } else {
+      showToast('Please enter a coupon code', 'error');
+    }
+  };
+  
+  // Validate form
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    // Validate first name
+    const firstNameValidation = validateName(billingDetails.firstName);
+    if (!firstNameValidation.valid) {
+      newErrors.firstName = firstNameValidation.error || 'Invalid first name';
+    }
+
+    // Validate last name (if using two-name system)
+    // Note: lastName is not in the form, but keeping validation ready
+
+    // Validate street address
+    const addressValidation = validateRequired(billingDetails.streetAddress, 'Street address');
+    if (!addressValidation.valid) {
+      newErrors.streetAddress = addressValidation.error || 'Street address is required';
+    }
+
+    // Validate city
+    const cityValidation = validateRequired(billingDetails.city, 'City');
+    if (!cityValidation.valid) {
+      newErrors.city = cityValidation.error || 'City is required';
+    }
+
+    // Validate phone
+    const phoneValidation = validatePhone(billingDetails.phone);
+    if (!phoneValidation.valid) {
+      newErrors.phone = phoneValidation.error || 'Invalid phone number';
+    }
+
+    // Validate email
+    const emailValidation = validateEmail(billingDetails.email);
+    if (!emailValidation.valid) {
+      newErrors.email = emailValidation.error || 'Invalid email';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log('Order placed:', { billingDetails, paymentMethod });
-    alert('Order placed successfully!');
-    // In real app: send to API
+    
+    if (cartItems.length === 0) {
+      showToast('Your cart is empty!', 'error');
+      return;
+    }
+
+    // Validate form
+    if (!validateForm()) {
+      showToast('Please fix the errors in the form', 'error');
+      return;
+    }
+    
+    console.log('Order placed:', { billingDetails, paymentMethod, cartItems });
+    showToast('Order placed successfully!', 'success');
+    clearCart();
+    
+    // Redirect to home page after successful order
+    setTimeout(() => {
+      navigate('/');
+    }, 2000);
   };
   
   return (
@@ -85,14 +148,20 @@ export const CheckoutPage: FC = () => {
               {/* Billing Form - Left Side */}
               <div className="space-y-6">
                 {/* First Name */}
-                <Input
-                  label="First Name*"
-                  type="text"
-                  name="firstName"
-                  value={billingDetails.firstName}
-                  onChange={handleInputChange}
-                  required
-                />
+                <div>
+                  <Input
+                    label="First Name*"
+                    type="text"
+                    name="firstName"
+                    value={billingDetails.firstName}
+                    onChange={handleInputChange}
+                    required
+                    className={errors.firstName ? 'border-red-500' : ''}
+                  />
+                  {errors.firstName && (
+                    <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+                  )}
+                </div>
                 
                 {/* Company Name */}
                 <Input
@@ -104,14 +173,20 @@ export const CheckoutPage: FC = () => {
                 />
                 
                 {/* Street Address */}
-                <Input
-                  label="Street Address*"
-                  type="text"
-                  name="streetAddress"
-                  value={billingDetails.streetAddress}
-                  onChange={handleInputChange}
-                  required
-                />
+                <div>
+                  <Input
+                    label="Street Address*"
+                    type="text"
+                    name="streetAddress"
+                    value={billingDetails.streetAddress}
+                    onChange={handleInputChange}
+                    required
+                    className={errors.streetAddress ? 'border-red-500' : ''}
+                  />
+                  {errors.streetAddress && (
+                    <p className="text-red-500 text-sm mt-1">{errors.streetAddress}</p>
+                  )}
+                </div>
                 
                 {/* Apartment */}
                 <Input
@@ -123,34 +198,52 @@ export const CheckoutPage: FC = () => {
                 />
                 
                 {/* Town/City */}
-                <Input
-                  label="Town/City*"
-                  type="text"
-                  name="city"
-                  value={billingDetails.city}
-                  onChange={handleInputChange}
-                  required
-                />
+                <div>
+                  <Input
+                    label="Town/City*"
+                    type="text"
+                    name="city"
+                    value={billingDetails.city}
+                    onChange={handleInputChange}
+                    required
+                    className={errors.city ? 'border-red-500' : ''}
+                  />
+                  {errors.city && (
+                    <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+                  )}
+                </div>
                 
                 {/* Phone */}
-                <Input
-                  label="Phone Number*"
-                  type="tel"
-                  name="phone"
-                  value={billingDetails.phone}
-                  onChange={handleInputChange}
-                  required
-                />
+                <div>
+                  <Input
+                    label="Phone Number*"
+                    type="tel"
+                    name="phone"
+                    value={billingDetails.phone}
+                    onChange={handleInputChange}
+                    required
+                    className={errors.phone ? 'border-red-500' : ''}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                  )}
+                </div>
                 
                 {/* Email */}
-                <Input
-                  label="Email Address*"
-                  type="email"
-                  name="email"
-                  value={billingDetails.email}
-                  onChange={handleInputChange}
-                  required
-                />
+                <div>
+                  <Input
+                    label="Email Address*"
+                    type="email"
+                    name="email"
+                    value={billingDetails.email}
+                    onChange={handleInputChange}
+                    required
+                    className={errors.email ? 'border-red-500' : ''}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
                 
                 {/* Save Info Checkbox */}
                 <label className="flex items-center gap-3 cursor-pointer">
@@ -170,21 +263,33 @@ export const CheckoutPage: FC = () => {
               {/* Order Summary - Right Side */}
               <div>
                 {/* Product List */}
-                <div className="space-y-4 mb-6">
-                  {cartItems.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-12 h-12 object-cover rounded"
-                        />
-                        <span className="text-sm">{item.name}</span>
+                {cartItems.length === 0 ? (
+                  <div className="text-center py-8 text-gray-600">
+                    <p>Your cart is empty</p>
+                    <Link to="/products" className="text-accent hover:underline mt-2 inline-block">
+                      Browse Products
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="space-y-4 mb-6">
+                    {cartItems.map((item) => (
+                      <div key={item.product.id} className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={item.product.image}
+                            alt={item.product.name}
+                            className="w-12 h-12 object-cover rounded"
+                          />
+                          <div>
+                            <span className="text-sm block">{item.product.name}</span>
+                            <span className="text-xs text-gray-500">Qty: {item.quantity}</span>
+                          </div>
+                        </div>
+                        <span className="font-medium">${(item.product.price * item.quantity).toFixed(2)}</span>
                       </div>
-                      <span className="font-medium">${item.price}</span>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
                 
                 {/* Order Total */}
                 <div className="space-y-4 py-6 border-y border-neutral-200">
@@ -249,14 +354,19 @@ export const CheckoutPage: FC = () => {
                     onChange={(e) => setCouponCode(e.target.value)}
                     className="flex-1"
                   />
-                  <Button variant="primary" type="button">
+                  <Button variant="primary" type="button" onClick={handleApplyCoupon}>
                     Apply Coupon
                   </Button>
                 </div>
                 
                 {/* Place Order Button */}
                 <div className="mt-6">
-                  <Button type="submit" variant="primary" fullWidth>
+                  <Button 
+                    type="submit" 
+                    variant="primary" 
+                    fullWidth
+                    disabled={cartItems.length === 0}
+                  >
                     Place Order
                   </Button>
                 </div>
