@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { CartItem } from '@/types';
 import { useCart } from '@/contexts/CartContext';
+import { useToast } from '@/contexts/ToastContext';
 
 
 // CartPage component - Shopping cart with table layout
@@ -13,6 +14,7 @@ export const CartPage: FC = () => {
 
   // Coupon code state
   const [couponCode, setCouponCode] = useState('');
+  const { showToast } = useToast();
   
   // Calculate totals
   const { cartItems, removeFromCart, updateQuantity } = useCart();
@@ -21,19 +23,24 @@ export const CartPage: FC = () => {
   const total = subtotal + shipping;
   
   // Handle quantity change
+  const handleQuantityChange = (id: string, qty: number) => {
+    if (qty < 1) return;
+    updateQuantity(id, qty);
+  };
 
-const handleQuantityChange = (id: string, qty: number) => {
-  updateQuantity(id, qty);
-};
-
-const handleRemove = (id: string) => {
-  removeFromCart(id);
-};
+  const handleRemove = (id: string) => {
+    removeFromCart(id);
+    showToast('Product removed from cart', 'success');
+  };
+  
   // Handle coupon apply
   const handleApplyCoupon = (): void => {
     if (couponCode) {
-      alert(`Coupon "${couponCode}" applied!`);
+      showToast(`Coupon "${couponCode}" applied successfully!`, 'success');
       // In real app: validate and apply discount
+      setCouponCode('');
+    } else {
+      showToast('Please enter a coupon code', 'error');
     }
   };
   
@@ -63,9 +70,9 @@ const handleRemove = (id: string) => {
           ) : (
             <>
               {/* Cart Table */}
-              <div className="bg-white shadow-md rounded-lg overflow-hidden mb-6">
+              <div className="bg-white dark:bg-dark-bg-secondary shadow-md dark:shadow-card-dark rounded-lg overflow-hidden mb-6 border border-transparent dark:border-dark-border-primary">
                 {/* Table Header */}
-                <div className="hidden md:grid md:grid-cols-12 gap-4 bg-white border-b border-neutral-200 px-6 py-4 font-semibold">
+                <div className="hidden md:grid md:grid-cols-12 gap-4 bg-white dark:bg-dark-bg-tertiary border-b border-neutral-200 dark:border-dark-border-primary px-6 py-4 font-semibold text-gray-900 dark:text-dark-text-primary">
                   <div className="col-span-5">Product</div>
                   <div className="col-span-2 text-center">Price</div>
                   <div className="col-span-2 text-center">Quantity</div>

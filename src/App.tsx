@@ -5,7 +5,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { router } from './router';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { CartProvider } from './contexts/CartContext';
-import { useProducts } from "@/hooks/useProducts";
+import { WishlistProvider } from './contexts/WishlistContext';
+import { ToastProvider } from './contexts/ToastContext';
+import { ToastContainer } from './components/ui/ToastContainer';
 
 
 // Create React Query client with default configuration
@@ -33,10 +35,17 @@ export const App: FC = () => {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <CartProvider>
-          {/* Router Provider with all routes */}
-          <RouterProvider router={router} />
-        </CartProvider>
+        <ToastProvider>
+          <WishlistProvider>
+            <CartProvider>
+              {/* Router Provider with all routes */}
+              <RouterProvider router={router} />
+              
+              {/* Toast Notification Container */}
+              <ToastContainer />
+            </CartProvider>
+          </WishlistProvider>
+        </ToastProvider>
 
         {/* React Query DevTools - only in development */}
         <ReactQueryDevtools initialIsOpen={false} />

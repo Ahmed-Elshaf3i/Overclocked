@@ -1,4 +1,5 @@
-import { FC, useState, useEffect, useMemo } from "react";import { Link } from "react-router-dom";
+import { FC, useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   ArrowRightIcon,
   ChevronLeftIcon,
@@ -13,6 +14,9 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { Button } from "@/components/ui/Button";
 import { useProducts } from "@/hooks/useProducts";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/contexts/ToastContext";
 
 // Carousel slide interface
 interface CarouselSlide {
@@ -35,6 +39,76 @@ export const HomePage: FC = () => {
     getExploreProducts,
   } = useProducts();
 
+  const { addToWishlist, isInWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const { showToast } = useToast();
+
+  // Handle wishlist toggle
+  const handleWishlistToggle = (productId: string) => {
+    const products = [
+      ...flashSaleProducts,
+      ...bestSellingProducts,
+      ...exploreProducts,
+    ];
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      if (isInWishlist(productId)) {
+        showToast("Product already in wishlist", "info");
+      } else {
+        addToWishlist(product);
+        showToast(`${product.name} added to wishlist!`, "success");
+      }
+    }
+  };
+
+  // Handle add to cart
+  const handleAddToCart = (productId: string) => {
+    const products = [
+      ...flashSaleProducts,
+      ...bestSellingProducts,
+      ...exploreProducts,
+    ];
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      addToCart(product, 1);
+      showToast(`${product.name} added to cart!`, "success");
+    }
+  };
+
+  // Handle quick view
+  const handleQuickView = (productId: string) => {
+    showToast("Quick view - Coming Soon!", "info");
+  };
+
+  // Handle Buy Now from promotional banner
+  const handleBuyNow = () => {
+    // Find JBL product or use first audio product
+    const jblProduct = [
+      ...flashSaleProducts,
+      ...bestSellingProducts,
+      ...exploreProducts,
+    ].find(
+      (p) =>
+        p.name.toLowerCase().includes("jbl") ||
+        p.category.toLowerCase() === "audio"
+    );
+
+    if (jblProduct) {
+      addToCart(jblProduct, 1);
+      showToast(`${jblProduct.name} added to cart!`, "success");
+      // Navigate to cart after a brief delay
+      setTimeout(() => {
+        window.location.href = "/cart";
+      }, 500);
+    } else {
+      // Fallback: just redirect to products page
+      showToast("Redirecting to products...", "info");
+      setTimeout(() => {
+        window.location.href = "/products";
+      }, 500);
+    }
+  };
+
   // Carousel state
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -55,10 +129,18 @@ export const HomePage: FC = () => {
   });
 
   // Get dynamic product data
-  const flashSaleProducts = useMemo(() => getFlashSaleProducts(4), [getFlashSaleProducts]);
-  const bestSellingProducts = useMemo(() => getBestSellingProducts(4), [getBestSellingProducts]);
-  const exploreProducts = useMemo(() => getExploreProducts(8), [getExploreProducts]);
-
+  const flashSaleProducts = useMemo(
+    () => getFlashSaleProducts(4),
+    [getFlashSaleProducts]
+  );
+  const bestSellingProducts = useMemo(
+    () => getBestSellingProducts(4),
+    [getBestSellingProducts]
+  );
+  const exploreProducts = useMemo(
+    () => getExploreProducts(8),
+    [getExploreProducts]
+  );
 
   // Carousel slides data (static as requested)
   const carouselSlides: CarouselSlide[] = [
@@ -89,7 +171,8 @@ export const HomePage: FC = () => {
       discount: "20%",
       image:
         "https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$",
-      bgColor: "bg-gradient-to-r from-blue-900 to-indigo-800",
+      bgColor:
+        "bg-gradient-to-r from-gray-900 to-neutral-800 dark:from-dark-bg-elevated dark:to-dark-bg-secondary",
       link: "/products/ps5",
     },
     {
@@ -99,7 +182,8 @@ export const HomePage: FC = () => {
       discount: "12%",
       image:
         "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQD83?wid=1144&hei=1144&fmt=jpeg&qlt=90",
-      bgColor: "bg-gradient-to-r from-purple-900 to-pink-800",
+      bgColor:
+        "bg-gradient-to-r from-neutral-900 to-gray-800 dark:from-dark-bg-tertiary dark:to-dark-bg-secondary",
       link: "/products/airpods",
     },
     {
@@ -420,7 +504,14 @@ export const HomePage: FC = () => {
           {/* Product Grid - Dynamic */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {flashSaleProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToWishlist={handleWishlistToggle}
+                onAddToCart={handleAddToCart}
+                onQuickView={handleQuickView}
+                isInWishlist={isInWishlist(product.id)}
+              />
             ))}
           </div>
 
@@ -454,7 +545,14 @@ export const HomePage: FC = () => {
           {/* Product Grid - Dynamic */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {bestSellingProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToWishlist={handleWishlistToggle}
+                onAddToCart={handleAddToCart}
+                onQuickView={handleQuickView}
+                isInWishlist={isInWishlist(product.id)}
+              />
             ))}
           </div>
         </div>
@@ -497,7 +595,7 @@ export const HomePage: FC = () => {
                   ].map((time, index) => (
                     <div
                       key={index}
-                      className="bg-white text-black rounded-full w-16 h-16 flex flex-col items-center justify-center"
+                      className="bg-white dark:bg-dark-bg-secondary text-black dark:text-dark-text-primary rounded-full w-16 h-16 flex flex-col items-center justify-center border border-transparent dark:border-dark-border-primary shadow-md dark:shadow-glow-subtle"
                     >
                       <div className="text-lg font-bold">{time.value}</div>
                       <div className="text-xs">{time.label}</div>
@@ -508,6 +606,7 @@ export const HomePage: FC = () => {
                 <Button
                   variant="primary"
                   className="bg-success hover:bg-green-600"
+                  onClick={handleBuyNow}
                 >
                   Buy Now!
                 </Button>
@@ -552,7 +651,14 @@ export const HomePage: FC = () => {
           {/* Product Grid - Dynamic */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {exploreProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToWishlist={handleWishlistToggle}
+                onAddToCart={handleAddToCart}
+                onQuickView={handleQuickView}
+                isInWishlist={isInWishlist(product.id)}
+              />
             ))}
           </div>
 

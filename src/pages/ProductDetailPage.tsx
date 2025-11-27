@@ -6,6 +6,8 @@ import { Rating } from '@/components/ui/Rating';
 import { ProductCard } from '@/components/ui/ProductCard';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useToast } from '@/contexts/ToastContext';
 import { useProducts } from '@/hooks/useProducts';
 
 // ProductDetailPage component - Product detail with image gallery
@@ -18,6 +20,8 @@ export const ProductDetailPage: FC = () => {
   
   // Get cart context
   const { addToCart } = useCart();
+  const { addToWishlist, isInWishlist } = useWishlist();
+  const { showToast } = useToast();
   
   // Get product data dynamically
   const product = id ? getProductById(id) : undefined;
@@ -35,7 +39,19 @@ export const ProductDetailPage: FC = () => {
   const handleAddToCart = () => {
     if (product) {
       addToCart(product, quantity);
-      alert(`${product.name} added to cart!`);
+      showToast(`${product.name} added to cart!`, 'success');
+    }
+  };
+
+  // Handle add to wishlist
+  const handleAddToWishlist = () => {
+    if (product) {
+      if (isInWishlist(product.id)) {
+        showToast('Product already in wishlist', 'info');
+      } else {
+        addToWishlist(product);
+        showToast(`${product.name} added to wishlist!`, 'success');
+      }
     }
   };
   
@@ -72,12 +88,12 @@ export const ProductDetailPage: FC = () => {
     <div className="w-full">
       {/* Breadcrumb */}
       <div className="container-custom py-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Link to="/" className="hover:text-black">Home</Link>
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-dark-text-tertiary">
+          <Link to="/" className="hover:text-black dark:hover:text-dark-text-primary transition-colors">Home</Link>
           <span>/</span>
-          <Link to="/products" className="hover:text-black">{product.category}</Link>
+          <Link to="/products" className="hover:text-black dark:hover:text-dark-text-primary transition-colors">{product.category}</Link>
           <span>/</span>
-          <span className="text-black">{product.name}</span>
+          <span className="text-black dark:text-dark-text-primary">{product.name}</span>
         </div>
       </div>
       
@@ -94,8 +110,8 @@ export const ProductDetailPage: FC = () => {
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`w-20 h-20 bg-neutral-100 rounded overflow-hidden ${
-                        selectedImage === index ? 'ring-2 ring-accent' : ''
+                      className={`w-20 h-20 bg-neutral-100 dark:bg-dark-bg-tertiary rounded overflow-hidden transition-all duration-300 ${
+                        selectedImage === index ? 'ring-2 ring-accent dark:ring-dark-accent-primary' : 'hover:ring-1 hover:ring-neutral-300 dark:hover:ring-dark-border-secondary'
                       }`}
                     >
                       <img
@@ -109,7 +125,7 @@ export const ProductDetailPage: FC = () => {
               )}
               
               {/* Main Image */}
-              <div className="flex-1 bg-neutral-100 rounded-lg overflow-hidden aspect-square">
+              <div className="flex-1 bg-neutral-100 dark:bg-dark-bg-secondary rounded-lg overflow-hidden aspect-square border border-transparent dark:border-dark-border-primary transition-all duration-300">
                 <img
                   src={product.images?.[selectedImage] || product.image}
                   alt={product.name}
@@ -121,34 +137,34 @@ export const ProductDetailPage: FC = () => {
             {/* Right Side - Product Info */}
             <div>
               {/* Product Title */}
-              <h1 className="text-3xl font-semibold mb-3">{product.name}</h1>
+              <h1 className="text-3xl font-semibold mb-3 text-gray-900 dark:text-dark-text-primary">{product.name}</h1>
               
               {/* Rating & Stock */}
               <div className="flex items-center gap-4 mb-4">
                 <Rating rating={product.rating} reviews={product.reviews} />
-                <span className="text-gray-400">|</span>
-                <span className={`text-sm ${product.inStock ? 'text-success' : 'text-red-500'}`}>
+                <span className="text-gray-400 dark:text-dark-text-muted">|</span>
+                <span className={`text-sm ${product.inStock ? 'text-success dark:text-dark-accent-success' : 'text-red-500 dark:text-dark-accent-error'}`}>
                   {product.inStock ? 'In Stock' : 'Out of Stock'}
                 </span>
               </div>
               
               {/* Price */}
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-3xl font-semibold">${product.price.toFixed(2)}</span>
+                <span className="text-3xl font-semibold text-gray-900 dark:text-dark-text-primary">${product.price.toFixed(2)}</span>
                 {product.originalPrice && (
-                  <span className="text-xl text-gray-500 line-through">
+                  <span className="text-xl text-gray-500 dark:text-dark-text-muted line-through">
                     ${product.originalPrice.toFixed(2)}
                   </span>
                 )}
                 {product.originalPrice && (
-                  <span className="text-accent font-semibold">
+                  <span className="text-accent dark:text-dark-accent-primary font-semibold">
                     Save {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
                   </span>
                 )}
               </div>
               
               {/* Description */}
-              <p className="text-gray-700 mb-6 pb-6 border-b border-neutral-200">
+              <p className="text-gray-700 dark:text-dark-text-secondary mb-6 pb-6 border-b border-neutral-200 dark:border-dark-border-primary">
                 {product.description}
               </p>
               
@@ -156,14 +172,14 @@ export const ProductDetailPage: FC = () => {
               {product.colors && product.colors.length > 0 && (
                 <div className="mb-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="font-medium">Colours:</span>
+                    <span className="font-medium text-gray-900 dark:text-dark-text-primary">Colours:</span>
                     <div className="flex gap-2">
                       {product.colors.map((color, index) => (
                         <button
                           key={index}
                           onClick={() => setSelectedColor(color)}
-                          className={`w-8 h-8 rounded-full border-2 transition-all ${
-                            selectedColor === color ? 'border-black scale-110' : 'border-transparent'
+                          className={`w-8 h-8 rounded-full border-2 transition-all duration-300 ${
+                            selectedColor === color ? 'border-black dark:border-dark-text-primary scale-110 shadow-md' : 'border-transparent hover:scale-105'
                           }`}
                           style={{ backgroundColor: color }}
                           aria-label={`Select color ${color}`}
@@ -178,16 +194,16 @@ export const ProductDetailPage: FC = () => {
               {product.sizes && product.sizes.length > 0 && (
                 <div className="mb-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="font-medium">Size:</span>
+                    <span className="font-medium text-gray-900 dark:text-dark-text-primary">Size:</span>
                     <div className="flex gap-2">
                       {product.sizes.map((size) => (
                         <button
                           key={size}
                           onClick={() => setSelectedSize(size)}
-                          className={`px-4 py-2 border rounded transition-all ${
+                          className={`px-4 py-2 border rounded transition-all duration-300 ${
                             selectedSize === size
-                              ? 'bg-accent text-white border-accent'
-                              : 'border-neutral-300 hover:border-black'
+                              ? 'bg-accent dark:bg-dark-accent-primary text-white border-accent dark:border-dark-accent-primary shadow-md'
+                              : 'border-neutral-300 dark:border-dark-border-primary bg-white dark:bg-dark-bg-secondary text-gray-900 dark:text-dark-text-primary hover:border-black dark:hover:border-dark-accent-primary'
                           }`}
                         >
                           {size}
@@ -201,10 +217,10 @@ export const ProductDetailPage: FC = () => {
               {/* Quantity & Buy Actions */}
               <div className="flex flex-wrap gap-4 mb-6">
                 {/* Quantity Selector */}
-                <div className="flex items-center border border-neutral-300 rounded">
+                <div className="flex items-center border border-neutral-300 dark:border-dark-border-primary rounded bg-white dark:bg-dark-bg-secondary">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-4 py-3 hover:bg-neutral-100 transition-colors"
+                    className="px-4 py-3 text-gray-900 dark:text-dark-text-primary hover:bg-neutral-100 dark:hover:bg-dark-bg-tertiary transition-all duration-300"
                   >
                     -
                   </button>
@@ -212,12 +228,12 @@ export const ProductDetailPage: FC = () => {
                     type="number"
                     value={quantity}
                     onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-16 text-white text-center border-x border-neutral-300 py-3 focus:outline-none"
+                    className="w-16 text-black dark:text-dark-text-primary text-center border-x border-neutral-300 dark:border-dark-border-primary py-3 focus:outline-none bg-transparent"
                     min="1"
                   />
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="px-4 py-3 hover:bg-neutral-100 transition-colors"
+                    className="px-4 py-3 text-gray-900 dark:text-dark-text-primary hover:bg-neutral-100 dark:hover:bg-dark-bg-tertiary transition-all duration-300"
                   >
                     +
                   </button>
@@ -235,21 +251,28 @@ export const ProductDetailPage: FC = () => {
                 
                 {/* Wishlist Button */}
                 <button
-                  className="p-3 border border-neutral-300 rounded hover:bg-neutral-100 transition-colors"
+                  onClick={handleAddToWishlist}
+                  className={`p-3 border border-neutral-300 dark:border-dark-border-primary rounded bg-white dark:bg-dark-bg-secondary text-gray-900 dark:text-dark-text-primary hover:bg-neutral-100 dark:hover:bg-dark-bg-tertiary transition-all duration-300 ${
+                    product && isInWishlist(product.id) ? 'bg-red-50 dark:bg-dark-accent-error/10 border-red-300 dark:border-dark-accent-error' : ''
+                  }`}
                   aria-label="Add to wishlist"
                 >
-                  <HeartIcon className="w-6 h-6" />
+                  <HeartIcon
+                    className={`w-6 h-6 ${
+                      product && isInWishlist(product.id) ? 'fill-red-500 dark:fill-dark-accent-error text-red-500 dark:text-dark-accent-error' : ''
+                    }`}
+                  />
                 </button>
               </div>
               
               {/* Delivery Info */}
-              <div className="border border-neutral-300 rounded-lg overflow-hidden">
-                <div className="p-4 border-b border-neutral-300">
+              <div className="border border-neutral-300 dark:border-dark-border-primary rounded-lg overflow-hidden bg-white dark:bg-dark-bg-secondary">
+                <div className="p-4 border-b border-neutral-300 dark:border-dark-border-primary">
                   <div className="flex items-center gap-3">
-                    <TruckIcon className="w-8 h-8" />
+                    <TruckIcon className="w-8 h-8 text-gray-700 dark:text-dark-text-secondary" />
                     <div>
-                      <h4 className="font-medium">Free Delivery</h4>
-                      <p className="text-sm text-gray-600 underline cursor-pointer">
+                      <h4 className="font-medium text-gray-900 dark:text-dark-text-primary">Free Delivery</h4>
+                      <p className="text-sm text-gray-600 dark:text-dark-text-tertiary underline cursor-pointer hover:text-accent dark:hover:text-dark-accent-primary transition-colors">
                         Enter your postal code for Delivery Availability
                       </p>
                     </div>
@@ -257,11 +280,11 @@ export const ProductDetailPage: FC = () => {
                 </div>
                 <div className="p-4">
                   <div className="flex items-center gap-3">
-                    <ArrowPathIcon className="w-8 h-8" />
+                    <ArrowPathIcon className="w-8 h-8 text-gray-700 dark:text-dark-text-secondary" />
                     <div>
-                      <h4 className="font-medium">Return Delivery</h4>
-                      <p className="text-sm text-gray-600">
-                        Free 30 Days Delivery Returns. <span className="underline cursor-pointer">Details</span>
+                      <h4 className="font-medium text-gray-900 dark:text-dark-text-primary">Return Delivery</h4>
+                      <p className="text-sm text-gray-600 dark:text-dark-text-tertiary">
+                        Free 30 Days Delivery Returns. <span className="underline cursor-pointer hover:text-accent dark:hover:text-dark-accent-primary transition-colors">Details</span>
                       </p>
                     </div>
                   </div>

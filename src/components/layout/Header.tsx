@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
   MagnifyingGlassIcon,
   HeartIcon,
@@ -10,13 +10,17 @@ import {
 } from '@heroicons/react/24/outline';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 // Header component - Global navigation
 export const Header: FC = () => {
+  const navigate = useNavigate();
   const { cartItems } = useCart();
-
+  const { wishlistItems } = useWishlist();
+  
   // Mobile menu state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   
   // Navigation links
   const navLinks = [
@@ -25,6 +29,15 @@ export const Header: FC = () => {
     { name: 'About', path: '/about' },
     { name: 'Sign Up', path: '/signup' },
   ];
+  
+  // Handle search
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery('');
+    }
+  };
   
   return (
     <header className="w-full">
@@ -83,14 +96,18 @@ export const Header: FC = () => {
             {/* Search & Icons */}
             <div className="flex items-center gap-4">
               {/* Search Bar */}
-              <div className="hidden lg:flex items-center bg-neutral-100 dark:bg-dark-bg-tertiary rounded-lg px-3 py-2 transition-all duration-300 hover:ring-2 hover:ring-gray-300 dark:hover:ring-dark-accent-primary/30">
+              <form onSubmit={handleSearch} className="hidden lg:flex items-center bg-neutral-100 dark:bg-dark-bg-tertiary rounded-lg px-3 py-2 transition-all duration-300 hover:ring-2 hover:ring-gray-300 dark:hover:ring-dark-accent-primary/30">
                 <input
                   type="text"
                   placeholder="What are you looking for?"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="bg-transparent border-none outline-none text-sm w-64 text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-dark-text-muted transition-colors"
                 />
-                <MagnifyingGlassIcon className="w-5 h-5 text-gray-600 dark:text-dark-text-tertiary" />
-              </div>
+                <button type="submit" aria-label="Search">
+                  <MagnifyingGlassIcon className="w-5 h-5 text-gray-600 dark:text-dark-text-tertiary" />
+                </button>
+              </form>
               
               {/* Theme Toggle */}
               <ThemeToggle />
@@ -102,9 +119,11 @@ export const Header: FC = () => {
                 aria-label="Wishlist"
               >
                 <HeartIcon className="w-6 h-6 text-gray-900 dark:text-dark-text-primary transition-transform group-hover:scale-110" />
-                <span className="absolute -top-1 -right-1 bg-accent dark:bg-dark-accent-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md">
-                  4
-                </span>
+                {wishlistItems.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-accent dark:bg-dark-accent-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md">
+                    {wishlistItems.length}
+                  </span>
+                )}
               </Link>
               
               {/* Cart Icon */}
@@ -114,9 +133,11 @@ export const Header: FC = () => {
                 aria-label="Shopping Cart"
               >
                 <ShoppingCartIcon className="w-6 h-6 text-gray-900 dark:text-dark-text-primary transition-transform group-hover:scale-110" />
-                <span className="absolute -top-1 -right-1 bg-accent dark:bg-dark-accent-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md">
-                  {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
-                </span>
+                {cartItems.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-accent dark:bg-dark-accent-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md">
+                    {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+                  </span>
+                )}
               </Link>
               
               {/* User Account Icon */}
