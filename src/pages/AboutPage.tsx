@@ -74,7 +74,7 @@ export const AboutPage: FC = () => {
     <div className="w-full">
       {/* Breadcrumb */}
       <div className="container-custom py-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-white-600">
           <a href="/" className="hover:text-black">Home</a>
           <span>/</span>
           <span className="text-black">About</span>
@@ -88,7 +88,7 @@ export const AboutPage: FC = () => {
             {/* Story Content */}
             <div className="max-w-xl">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Story</h1>
-              <div className="space-y-4 text-gray-700">
+              <div className="space-y-4 text-white-700">
                 <p>
                   Launched in 2015, Exclusive is South Asia's premier online shopping
                   marketplace with an active presence in Bangladesh. Supported by wide range
@@ -131,7 +131,7 @@ export const AboutPage: FC = () => {
                 {/* Icon */}
                 <div className="flex justify-center mb-3 sm:mb-4">
                   <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center ${
-                    stat.highlighted ? 'bg-white/20' : 'bg-gray-300 group-hover:bg-white/20'
+                    stat.highlighted ? 'bg-white/20' : 'bg-white-300 group-hover:bg-white/20'
                   }`}>
                     {stat.icon === 'shop' && (
                       <ShoppingBagIcon className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${stat.highlighted ? 'text-white' : 'text-black group-hover:text-white'}`} />
@@ -177,14 +177,14 @@ export const AboutPage: FC = () => {
                 {/* Member Info */}
                 <div>
                   <h3 className="text-2xl font-semibold mb-1">{member.name}</h3>
-                  <p className="text-gray-600 mb-3">{member.role}</p>
+                  <p className="text-white-600 mb-3">{member.role}</p>
                   
                   {/* Social Links */}
                   <div className="flex gap-3">
                     {member.social.twitter && (
                       <a
                         href={member.social.twitter}
-                        className="text-gray-600 hover:text-black transition-colors"
+                        className="text-white-600 hover:text-black transition-colors"
                         aria-label="Twitter"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -195,7 +195,7 @@ export const AboutPage: FC = () => {
                     {member.social.instagram && (
                       <a
                         href={member.social.instagram}
-                        className="text-gray-600 hover:text-black transition-colors"
+                        className="text-white-600 hover:text-black transition-colors"
                         aria-label="Instagram"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -206,7 +206,7 @@ export const AboutPage: FC = () => {
                     {member.social.linkedin && (
                       <a
                         href={member.social.linkedin}
-                        className="text-gray-600 hover:text-black transition-colors"
+                        className="text-white-600 hover:text-black transition-colors"
                         aria-label="LinkedIn"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

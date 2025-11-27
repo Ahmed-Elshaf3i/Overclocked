@@ -9,9 +9,12 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { useCart } from "@/contexts/CartContext";
 
 // Header component - Global navigation
 export const Header: FC = () => {
+  const { cartItems } = useCart();
+
   // Mobile menu state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
@@ -112,7 +115,7 @@ export const Header: FC = () => {
               >
                 <ShoppingCartIcon className="w-6 h-6 text-gray-900 dark:text-dark-text-primary transition-transform group-hover:scale-110" />
                 <span className="absolute -top-1 -right-1 bg-accent dark:bg-dark-accent-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md">
-                  2
+                  {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
                 </span>
               </Link>
               

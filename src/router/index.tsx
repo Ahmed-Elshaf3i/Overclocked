@@ -13,6 +13,8 @@ import { SignInPage } from '@/pages/SignInPage';
 import { SignUpPage } from '@/pages/SignUpPage';
 import { WishlistPage } from '@/pages/WishlistPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
+import { ProductsPage } from '@/pages/ProductsPage';
+
 
 // Create browser router with all routes
 export const router = createBrowserRouter([
@@ -36,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: 'cart',
         element: <CartPage />,
+      },
+      {
+   path:"/products",
+    element :<ProductsPage />
       },
       {
         path: 'checkout',
