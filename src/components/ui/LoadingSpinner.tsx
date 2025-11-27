@@ -20,7 +20,7 @@ export const LoadingSpinner: FC<LoadingSpinnerProps> = ({
   
   return (
     <div
-      className={`${sizeClasses[size]} border-accent dark:border-dark-accent-primary border-t-transparent rounded-full animate-spin ${className}`}
+      className={`${sizeClasses[size]} border-accent border-t-transparent rounded-full animate-spin ${className}`}
       role="status"
       aria-label="Loading"
     />

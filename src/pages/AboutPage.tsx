@@ -2,7 +2,9 @@ import { FC } from 'react';
 import { ShoppingBagIcon, CurrencyDollarIcon, GiftIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { Statistic, TeamMember } from '@/types';
 
+// AboutPage component - About us page with story, statistics, and team
 export const AboutPage: FC = () => {
+  // Statistics data
   const statistics: Statistic[] = [
     {
       id: '1',
@@ -31,6 +33,7 @@ export const AboutPage: FC = () => {
     },
   ];
   
+  // Team members data
   const teamMembers: TeamMember[] = [
     {
       id: '1',
@@ -71,10 +74,10 @@ export const AboutPage: FC = () => {
     <div className="w-full">
       {/* Breadcrumb */}
       <div className="container-custom py-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-dark-text-tertiary">
-          <a href="/" className="hover:text-black dark:hover:text-dark-text-primary transition-colors">Home</a>
+        <div className="flex items-center gap-2 text-sm text-white-600">
+          <a href="/" className="hover:text-black">Home</a>
           <span>/</span>
-          <span className="text-black dark:text-dark-text-primary">About</span>
+          <span className="text-black">About</span>
         </div>
       </div>
       
@@ -84,8 +87,8 @@ export const AboutPage: FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Story Content */}
             <div className="max-w-xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-dark-text-primary">Our Story</h1>
-              <div className="space-y-4 text-gray-700 dark:text-dark-text-secondary">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Story</h1>
+              <div className="space-y-4 text-white-700">
                 <p>
                   Launched in 2015, Exclusive is South Asia's premier online shopping
                   marketplace with an active presence in Bangladesh. Supported by wide range
@@ -121,14 +124,14 @@ export const AboutPage: FC = () => {
                 key={stat.id}
                 className={`group relative border-2 rounded-lg p-4 sm:p-6 md:p-8 text-center transition-all hover:shadow-lg ${
                   stat.highlighted
-                    ? 'bg-accent dark:bg-dark-accent-primary border-accent dark:border-dark-accent-primary text-white'
-                    : 'border-gray-300 dark:border-dark-border-primary hover:bg-accent dark:hover:bg-dark-accent-primary hover:border-accent dark:hover:border-dark-accent-primary hover:text-white'
+                    ? 'bg-accent border-accent text-white'
+                    : 'border-gray-300 hover:bg-accent hover:border-accent hover:text-white'
                 }`}
               >
                 {/* Icon */}
                 <div className="flex justify-center mb-3 sm:mb-4">
                   <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center ${
-                    stat.highlighted ? 'bg-white/20' : 'bg-gray-300 group-hover:bg-white/20'
+                    stat.highlighted ? 'bg-white/20' : 'bg-white-300 group-hover:bg-white/20'
                   }`}>
                     {stat.icon === 'shop' && (
                       <ShoppingBagIcon className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${stat.highlighted ? 'text-white' : 'text-black group-hover:text-white'}`} />
@@ -163,7 +166,7 @@ export const AboutPage: FC = () => {
             {teamMembers.map((member) => (
               <div key={member.id} className="group">
                 {/* Member Image */}
-                <div className="bg-neutral-100 dark:bg-dark-bg-secondary rounded-lg overflow-hidden mb-6 border border-transparent dark:border-dark-border-primary">
+                <div className="bg-neutral-100 rounded-lg overflow-hidden mb-6">
                   <img
                     src={member.image}
                     alt={member.name}
@@ -173,15 +176,15 @@ export const AboutPage: FC = () => {
                 
                 {/* Member Info */}
                 <div>
-                  <h3 className="text-2xl font-semibold mb-1 text-gray-900 dark:text-dark-text-primary">{member.name}</h3>
-                  <p className="text-gray-600 dark:text-dark-text-tertiary mb-3">{member.role}</p>
+                  <h3 className="text-2xl font-semibold mb-1">{member.name}</h3>
+                  <p className="text-white-600 mb-3">{member.role}</p>
                   
                   {/* Social Links */}
                   <div className="flex gap-3">
                     {member.social.twitter && (
                       <a
                         href={member.social.twitter}
-                        className="text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
+                        className="text-white-600 hover:text-black transition-colors"
                         aria-label="Twitter"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -192,7 +195,7 @@ export const AboutPage: FC = () => {
                     {member.social.instagram && (
                       <a
                         href={member.social.instagram}
-                        className="text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
+                        className="text-white-600 hover:text-black transition-colors"
                         aria-label="Instagram"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -203,7 +206,7 @@ export const AboutPage: FC = () => {
                     {member.social.linkedin && (
                       <a
                         href={member.social.linkedin}
-                        className="text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary transition-colors"
+                        className="text-white-600 hover:text-black transition-colors"
                         aria-label="LinkedIn"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

@@ -23,37 +23,36 @@ export default {
           DEFAULT: '#00B517',
           light: '#E6F7E9',
         },
-        // Premium Dark Theme Colors - Comfortable & Elegant
+        // Enhanced Dark Theme Colors
         dark: {
           bg: {
-            primary: '#1a1a1a',    // Comfortable dark gray - Main background
-            secondary: '#242424',  // Elevated surface - Cards/panels
-            tertiary: '#2e2e2e',   // Light surface - Hover states
-            elevated: '#383838',   // Lightest surface - Active/selected
+            primary: '#0f172a',    // Slate 900 - Main background
+            secondary: '#1e293b',  // Slate 800 - Cards/elevated surfaces
+            tertiary: '#334155',   // Slate 700 - Hover states
+            elevated: '#475569',   // Slate 600 - Active/selected
           },
           text: {
-            primary: '#f5f5f5',    // Soft white - Main text (less harsh)
-            secondary: '#e0e0e0',  // Light gray - Secondary text
-            tertiary: '#b8b8b8',   // Medium gray - Muted text
-            muted: '#8a8a8a',      // Subdued gray - Disabled/placeholder
+            primary: '#f8fafc',    // Slate 50 - Main text
+            secondary: '#e2e8f0',  // Slate 200 - Secondary text
+            tertiary: '#cbd5e1',   // Slate 300 - Muted text
+            muted: '#94a3b8',      // Slate 400 - Disabled/placeholder
           },
           border: {
-            primary: '#333333',    // Subtle border - Default
-            secondary: '#4a4a4a',  // Visible border - Hover
-            accent: '#DB4444',     // Brand red - Accent borders
+            primary: '#334155',    // Slate 700 - Default borders
+            secondary: '#475569',  // Slate 600 - Hover borders
+            accent: '#6366f1',     // Indigo 500 - Accent borders
           },
           accent: {
-            primary: '#e74c4c',    // Slightly brighter red for visibility
-            secondary: '#ff6b6b',  // Lighter red for highlights
-            success: '#34d399',    // Softer green
-            warning: '#fbbf24',    // Warm amber
-            error: '#f87171',      // Softer red for errors
+            primary: '#6366f1',    // Indigo 500
+            secondary: '#8b5cf6',  // Violet 500
+            success: '#10b981',    // Emerald 500
+            warning: '#f59e0b',    // Amber 500
+            error: '#ef4444',      // Red 500
           },
           glow: {
-            red: 'rgba(231, 76, 76, 0.12)',      // Softer red glow
-            redStrong: 'rgba(231, 76, 76, 0.2)', // Moderate red glow
-            success: 'rgba(52, 211, 153, 0.12)', // Softer green glow
-            subtle: 'rgba(255, 255, 255, 0.03)', // Very subtle white glow
+            indigo: 'rgba(99, 102, 241, 0.15)',
+            violet: 'rgba(139, 92, 246, 0.15)',
+            emerald: 'rgba(16, 185, 129, 0.15)',
           }
         },
       },
@@ -78,12 +77,11 @@ export default {
       boxShadow: {
         'card': '0 2px 8px rgba(0, 0, 0, 0.1)',
         'card-hover': '0 4px 16px rgba(0, 0, 0, 0.15)',
-        'card-dark': '0 2px 8px rgba(0, 0, 0, 0.3)',
-        'card-hover-dark': '0 4px 16px rgba(231, 76, 76, 0.1), 0 2px 8px rgba(0, 0, 0, 0.4)',
-        'glow-red': '0 0 16px rgba(231, 76, 76, 0.25)',
-        'glow-red-strong': '0 0 24px rgba(231, 76, 76, 0.35)',
-        'glow-success': '0 0 16px rgba(52, 211, 153, 0.25)',
-        'glow-subtle': '0 1px 4px rgba(255, 255, 255, 0.03)',
+        'card-dark': '0 4px 16px rgba(0, 0, 0, 0.4)',
+        'card-hover-dark': '0 8px 32px rgba(0, 0, 0, 0.5)',
+        'glow-indigo': '0 0 20px rgba(99, 102, 241, 0.3)',
+        'glow-violet': '0 0 20px rgba(139, 92, 246, 0.3)',
+        'glow-emerald': '0 0 20px rgba(16, 185, 129, 0.3)',
       },
       
       // Animations

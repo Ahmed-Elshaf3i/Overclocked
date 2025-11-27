@@ -30,9 +30,9 @@ export const Rating: FC<RatingProps> = ({
     return (
       <span key={index}>
         {filled ? (
-          <StarIcon className={`${sizeClasses[size]} text-yellow-400 dark:text-yellow-500`} />
+          <StarIcon className={`${sizeClasses[size]} text-yellow-400`} />
         ) : (
-          <StarOutlineIcon className={`${sizeClasses[size]} text-gray-300 dark:text-dark-border-secondary`} />
+          <StarOutlineIcon className={`${sizeClasses[size]} text-gray-300`} />
         )}
       </span>
     );
@@ -45,7 +45,7 @@ export const Rating: FC<RatingProps> = ({
       
       {/* Review count (optional) */}
       {showReviews && reviews !== undefined && (
-        <span className="text-sm text-gray-600 dark:text-dark-text-tertiary">({reviews})</span>
+        <span className="text-sm text-gray-600">({reviews})</span>
       )}
     </div>
   );

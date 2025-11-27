@@ -14,13 +14,13 @@ interface BadgeProps {
 export const Badge: FC<BadgeProps> = ({ variant, children, className = '' }) => {
   // Variant-specific classes
   const variantClasses = {
-    discount: 'bg-accent dark:bg-dark-accent-primary text-white shadow-md dark:shadow-glow-red',
-    new: 'bg-success dark:bg-dark-accent-success text-white shadow-md dark:shadow-glow-success',
+    discount: 'bg-accent text-white',
+    new: 'bg-success text-white',
   };
   
   return (
     <span
-      className={`inline-block text-xs font-semibold px-3 py-1 rounded transition-all duration-300 ${variantClasses[variant]} ${className}`}
+      className={`inline-block text-xs font-semibold px-3 py-1 rounded ${variantClasses[variant]} ${className}`}
     >
       {children}
     </span>

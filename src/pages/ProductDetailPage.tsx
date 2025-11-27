@@ -1,101 +1,81 @@
 import { FC, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { TruckIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { useParams, Link } from 'react-router-dom';
+import { HeartIcon, TruckIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/Button';
 import { Rating } from '@/components/ui/Rating';
 import { ProductCard } from '@/components/ui/ProductCard';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { Product } from '@/types';
+import { useCart } from '@/contexts/CartContext';
+import { useProducts } from '@/hooks/useProducts';
 
+// ProductDetailPage component - Product detail with image gallery
 export const ProductDetailPage: FC = () => {
+  // Get product ID from URL params
   const { id } = useParams<{ id: string }>();
   
-  const product: Product = {
-    id: id || '1',
-    name: 'Havic HV G-92 Gamepad',
-    price: 192.00,
-    originalPrice: 240.00,
-    rating: 5,
-    reviews: 150,
-    image: 'https://via.placeholder.com/500x500?text=Gamepad',
-    images: [
-      'https://via.placeholder.com/500x500?text=Gamepad+1',
-      'https://via.placeholder.com/500x500?text=Gamepad+2',
-      'https://via.placeholder.com/500x500?text=Gamepad+3',
-      'https://via.placeholder.com/500x500?text=Gamepad+4',
-    ],
-    category: 'Gaming',
-    description: 'PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.',
-    colors: ['#A0BCE0', '#E07575'],
-    sizes: ['XS', 'S', 'M', 'L', 'XL'],
-    inStock: true,
-  };
+  // Get products using the custom hook
+  const { getProductById, getRelatedProducts, loading } = useProducts();
   
+  // Get cart context
+  const { addToCart } = useCart();
+  
+  // Get product data dynamically
+  const product = id ? getProductById(id) : undefined;
+  
+  // Get related products from the same category
+  const relatedProducts = id ? getRelatedProducts(id, 4) : [];
+  
+  // State for selected image, color, size, quantity
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || '');
-  const [selectedSize, setSelectedSize] = useState('M');
+  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0] || '');
+  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || 'M');
   const [quantity, setQuantity] = useState(1);
   
-  const relatedProducts: Product[] = [
-    {
-      id: '2',
-      name: 'HAVIT HV-G92 Gamepad',
-      price: 120,
-      originalPrice: 160,
-      rating: 5,
-      reviews: 88,
-      image: 'https://via.placeholder.com/300x300?text=Gamepad',
-      category: 'Gaming',
-      inStock: true,
-    },
-    {
-      id: '3',
-      name: 'AK-900 Wired Keyboard',
-      price: 960,
-      originalPrice: 1160,
-      rating: 4,
-      reviews: 75,
-      image: 'https://via.placeholder.com/300x300?text=Keyboard',
-      category: 'Electronics',
-      inStock: true,
-    },
-    {
-      id: '4',
-      name: 'IPS LCD Gaming Monitor',
-      price: 370,
-      originalPrice: 400,
-      rating: 5,
-      reviews: 99,
-      image: 'https://via.placeholder.com/300x300?text=Monitor',
-      category: 'Electronics',
-      inStock: true,
-    },
-    {
-      id: '5',
-      name: 'RGB liquid CPU Cooler',
-      price: 160,
-      originalPrice: 170,
-      rating: 4.5,
-      reviews: 65,
-      image: 'https://via.placeholder.com/300x300?text=Cooler',
-      category: 'Electronics',
-      inStock: true,
-    },
-  ];
-  
-  const handleAddToCart = (): void => {
-    console.log('Added to cart:', { product, selectedColor, selectedSize, quantity });
-    alert('Product added to cart!');
+  // Handle add to cart
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product, quantity);
+      alert(`${product.name} added to cart!`);
+    }
   };
   
+  // Loading state
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-accent mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  // Product not found
+  if (!product) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Product Not Found</h2>
+          <p className="text-gray-600 mb-6">
+            The product you're looking for doesn't exist.
+          </p>
+          <Link to="/">
+            <Button variant="primary">Back to Home</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full">
       {/* Breadcrumb */}
       <div className="container-custom py-6">
         <div className="flex items-center gap-2 text-sm text-gray-600">
-          <a href="/" className="hover:text-black">Home</a>
+          <Link to="/" className="hover:text-black">Home</Link>
           <span>/</span>
-          <a href="/" className="hover:text-black">{product.category}</a>
+          <Link to="/products" className="hover:text-black">{product.category}</Link>
           <span>/</span>
           <span className="text-black">{product.name}</span>
         </div>
@@ -105,25 +85,30 @@ export const ProductDetailPage: FC = () => {
       <section className="py-8">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Left Side - Image Gallery */}
             <div className="flex gap-4">
-              <div className="flex flex-col gap-4">
-                {product.images?.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`w-20 h-20 bg-neutral-100 rounded overflow-hidden ${
-                      selectedImage === index ? 'ring-2 ring-accent' : ''
-                    }`}
-                  >
-                    <img
-                      src={img}
-                      alt={`Product ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
+              {/* Thumbnail Images */}
+              {product.images && product.images.length > 1 && (
+                <div className="flex flex-col gap-4">
+                  {product.images.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`w-20 h-20 bg-neutral-100 rounded overflow-hidden ${
+                        selectedImage === index ? 'ring-2 ring-accent' : ''
+                      }`}
+                    >
+                      <img
+                        src={img}
+                        alt={`${product.name} ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
               
+              {/* Main Image */}
               <div className="flex-1 bg-neutral-100 rounded-lg overflow-hidden aspect-square">
                 <img
                   src={product.images?.[selectedImage] || product.image}
@@ -133,9 +118,12 @@ export const ProductDetailPage: FC = () => {
               </div>
             </div>
             
+            {/* Right Side - Product Info */}
             <div>
+              {/* Product Title */}
               <h1 className="text-3xl font-semibold mb-3">{product.name}</h1>
               
+              {/* Rating & Stock */}
               <div className="flex items-center gap-4 mb-4">
                 <Rating rating={product.rating} reviews={product.reviews} />
                 <span className="text-gray-400">|</span>
@@ -144,19 +132,27 @@ export const ProductDetailPage: FC = () => {
                 </span>
               </div>
               
+              {/* Price */}
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-3xl font-semibold">${product.price}</span>
+                <span className="text-3xl font-semibold">${product.price.toFixed(2)}</span>
                 {product.originalPrice && (
                   <span className="text-xl text-gray-500 line-through">
-                    ${product.originalPrice}
+                    ${product.originalPrice.toFixed(2)}
+                  </span>
+                )}
+                {product.originalPrice && (
+                  <span className="text-accent font-semibold">
+                    Save {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
                   </span>
                 )}
               </div>
               
+              {/* Description */}
               <p className="text-gray-700 mb-6 pb-6 border-b border-neutral-200">
                 {product.description}
               </p>
               
+              {/* Color Selection */}
               {product.colors && product.colors.length > 0 && (
                 <div className="mb-6">
                   <div className="flex items-center gap-3 mb-3">
@@ -178,6 +174,7 @@ export const ProductDetailPage: FC = () => {
                 </div>
               )}
               
+              {/* Size Selection */}
               {product.sizes && product.sizes.length > 0 && (
                 <div className="mb-6">
                   <div className="flex items-center gap-3 mb-3">
@@ -201,7 +198,9 @@ export const ProductDetailPage: FC = () => {
                 </div>
               )}
               
+              {/* Quantity & Buy Actions */}
               <div className="flex flex-wrap gap-4 mb-6">
+                {/* Quantity Selector */}
                 <div className="flex items-center border border-neutral-300 rounded">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -213,7 +212,7 @@ export const ProductDetailPage: FC = () => {
                     type="number"
                     value={quantity}
                     onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-16 text-center border-x border-neutral-300 py-3 focus:outline-none"
+                    className="w-16 text-white text-center border-x border-neutral-300 py-3 focus:outline-none"
                     min="1"
                   />
                   <button
@@ -224,11 +223,26 @@ export const ProductDetailPage: FC = () => {
                   </button>
                 </div>
                 
-                <Button variant="primary" onClick={handleAddToCart} className="px-12">
-                  Buy Now
+                {/* Buy Now Button */}
+                <Button 
+                  variant="primary" 
+                  onClick={handleAddToCart} 
+                  className="px-12"
+                  disabled={!product.inStock}
+                >
+                  {product.inStock ? 'Add to Cart' : 'Out of Stock'}
                 </Button>
+                
+                {/* Wishlist Button */}
+                <button
+                  className="p-3 border border-neutral-300 rounded hover:bg-neutral-100 transition-colors"
+                  aria-label="Add to wishlist"
+                >
+                  <HeartIcon className="w-6 h-6" />
+                </button>
               </div>
               
+              {/* Delivery Info */}
               <div className="border border-neutral-300 rounded-lg overflow-hidden">
                 <div className="p-4 border-b border-neutral-300">
                   <div className="flex items-center gap-3">
@@ -258,18 +272,23 @@ export const ProductDetailPage: FC = () => {
         </div>
       </section>
       
-      <section className="py-16">
-        <div className="container-custom">
-          <SectionHeader subtitle="Related Item" title="" />
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((relatedProduct) => (
-              <ProductCard key={relatedProduct.id} product={relatedProduct} />
-            ))}
+      {/* Related Items Section */}
+      {relatedProducts.length > 0 && (
+        <section className="py-16">
+          <div className="container-custom">
+            <SectionHeader 
+              subtitle="Related Item" 
+              title={`More from ${product.category}`} 
+            />
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedProducts.map((relatedProduct) => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 };
-

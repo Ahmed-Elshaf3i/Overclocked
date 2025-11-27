@@ -1,6 +1,9 @@
-import { FC, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { FC, useState, useEffect, useMemo } from "react";import { Link } from "react-router-dom";
+import {
+  ArrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
 import {
   TruckIcon,
   ShieldCheckIcon,
@@ -9,8 +12,9 @@ import {
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { Button } from "@/components/ui/Button";
-import { Product } from "@/types";
+import { useProducts } from "@/hooks/useProducts";
 
+// Carousel slide interface
 interface CarouselSlide {
   id: number;
   title: string;
@@ -21,9 +25,20 @@ interface CarouselSlide {
   link: string;
 }
 
+// HomePage component - Main landing page
 export const HomePage: FC = () => {
+  // Get products using the custom hook
+  const {
+    loading,
+    getFlashSaleProducts,
+    getBestSellingProducts,
+    getExploreProducts,
+  } = useProducts();
+
+  // Carousel state
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Countdown timer state for Flash Sales
   const [flashSaleTime, setFlashSaleTime] = useState({
     days: 3,
     hours: 23,
@@ -31,6 +46,7 @@ export const HomePage: FC = () => {
     seconds: 56,
   });
 
+  // Countdown timer state for Promotional Banner
   const [promoTime, setPromoTime] = useState({
     hours: 23,
     days: 5,
@@ -38,6 +54,13 @@ export const HomePage: FC = () => {
     seconds: 35,
   });
 
+  // Get dynamic product data
+  const flashSaleProducts = useMemo(() => getFlashSaleProducts(4), [getFlashSaleProducts]);
+  const bestSellingProducts = useMemo(() => getBestSellingProducts(4), [getBestSellingProducts]);
+  const exploreProducts = useMemo(() => getExploreProducts(8), [getExploreProducts]);
+
+
+  // Carousel slides data (static as requested)
   const carouselSlides: CarouselSlide[] = [
     {
       id: 1,
@@ -91,6 +114,7 @@ export const HomePage: FC = () => {
     },
   ];
 
+  // Auto-rotate carousel every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
@@ -99,6 +123,7 @@ export const HomePage: FC = () => {
     return () => clearInterval(interval);
   }, [carouselSlides.length]);
 
+  // Flash Sale Countdown Timer - Updates every second
   useEffect(() => {
     const interval = setInterval(() => {
       setFlashSaleTime((prev) => {
@@ -133,6 +158,7 @@ export const HomePage: FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Promotional Banner Countdown Timer - Updates every second
   useEffect(() => {
     const interval = setInterval(() => {
       setPromoTime((prev) => {
@@ -167,6 +193,7 @@ export const HomePage: FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Navigation handlers
   const goToSlide = (index: number): void => {
     setCurrentSlide(index);
   };
@@ -181,271 +208,152 @@ export const HomePage: FC = () => {
     setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
   };
 
-  const flashSaleProducts: Product[] = [
-    {
-      id: "1",
-      name: "HAVIT HV-G92 Gamepad",
-      price: 120,
-      originalPrice: 160,
-      discount: 40,
-      rating: 5,
-      reviews: 88,
-      image:
-        "https://novicompu.vtexassets.com/arquivos/ids/167279/1VHAV15.jpg?v=638191830039970000",
-      category: "Gaming",
-      inStock: true,
-    },
-    {
-      id: "2",
-      name: "AK-900 Wired Keyboard",
-      price: 960,
-      originalPrice: 1160,
-      discount: 35,
-      rating: 4,
-      reviews: 75,
-      image:
-        "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400",
-      category: "Electronics",
-      inStock: true,
-    },
-    {
-      id: "3",
-      name: "IPS LCD Gaming Monitor",
-      price: 370,
-      originalPrice: 400,
-      discount: 30,
-      rating: 5,
-      reviews: 99,
-      image:
-        "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400",
-      category: "Electronics",
-      inStock: true,
-    },
-    {
-      id: "4",
-      name: "S-Series Comfort Chair",
-      price: 375,
-      originalPrice: 400,
-      discount: 25,
-      rating: 4.5,
-      reviews: 99,
-      image:
-        "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400",
-      category: "Furniture",
-      inStock: true,
-    },
+  // Categories for sidebar
+  const categories = [
+    "Woman's Fashion",
+    "Men's Fashion",
+    "Electronics",
+    "Home & Lifestyle",
+    "Medicine",
+    "Sports & Outdoor",
+    "Baby's & Toys",
+    "Groceries & Pets",
+    "Health & Beauty",
   ];
 
-  const bestSellingProducts: Product[] = [
-    {
-      id: "5",
-      name: "The north coat",
-      price: 260,
-      originalPrice: 360,
-      rating: 5,
-      reviews: 65,
-      image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=400",
-      category: "Fashion",
-      inStock: true,
-    },
-    {
-      id: "6",
-      name: "Gucci duffle bag",
-      price: 960,
-      originalPrice: 1160,
-      rating: 4.5,
-      reviews: 65,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
-      category: "Fashion",
-      inStock: true,
-    },
-    {
-      id: "7",
-      name: "RGB liquid CPU Cooler",
-      price: 160,
-      originalPrice: 170,
-      rating: 4.5,
-      reviews: 65,
-      image:
-        "https://aquatuning.shop-cdn.com/media/image/bb/e5/ce/1016662_4_600x600@2x..jpg",
-      category: "Electronics",
-      inStock: true,
-    },
-    {
-      id: "8",
-      name: "Small BookSelf",
-      price: 360,
-      rating: 5,
-      reviews: 65,
-      image:
-        "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=400",
-      category: "Furniture",
-      inStock: true,
-    },
-  ];
-
-  const exploreProducts: Product[] = [
-    {
-      id: "9",
-      name: "Breed Dry Dog Food",
-      price: 100,
-      rating: 3,
-      reviews: 35,
-      image:
-        "https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=400",
-      category: "Pets",
-      inStock: true,
-    },
-    {
-      id: "10",
-      name: "CANON EOS DSLR Camera",
-      price: 360,
-      rating: 4,
-      reviews: 95,
-      image:
-        "https://www.bhphotovideo.com/images/fb/canon_4460b004_eos_60d_dslr_camera_732048.jpg",
-      category: "Electronics",
-      inStock: true,
-    },
-    {
-      id: "11",
-      name: "ASUS FHD Gaming Laptop",
-      price: 700,
-      rating: 5,
-      reviews: 325,
-      image:
-        "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400",
-      category: "Electronics",
-      inStock: true,
-    },
-    {
-      id: "12",
-      name: "Curology Product Set",
-      price: 500,
-      rating: 4,
-      reviews: 145,
-      image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400",
-      category: "Beauty",
-      inStock: true,
-      isNew: true,
-    },
-  ];
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-accent mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
-      {/* Hero Section with Carousel */}
+      {/* Hero Section with Category Sidebar */}
       <section className="border-b border-neutral-200">
         <div className="container-custom py-8">
-          {/* Hero Carousel */}
-          <div className="relative overflow-hidden rounded-lg">
-            {/* Carousel Slides Container */}
-            <div
-              className="flex transition-transform duration-700 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {carouselSlides.map((slide) => (
-                <div
-                  key={slide.id}
-                  className={`min-w-full ${slide.bgColor} text-white`}
-                >
-                  <div className="flex flex-col md:flex-row items-center justify-between px-8 md:px-16 py-12 min-h-[400px]">
-                    <div className="max-w-md mb-8 md:mb-0 z-10">
-                      {/* Brand label with icon */}
-                      <div className="flex items-center gap-3 mb-4">
-                        <svg
-                          className="w-10 h-10"
-                          viewBox="0 0 40 40"
-                          fill="none"
-                        >
-                          <path
-                            d="M20 0L25 15H40L28 24L33 40L20 30L7 40L12 24L0 15H15L20 0Z"
-                            fill="white"
-                          />
-                        </svg>
-                        <span className="text-sm font-medium">
-                          {slide.subtitle}
-                        </span>
-                      </div>
+          <div className="flex gap-8">
+            {/* Category Sidebar */}
+            <aside className="hidden lg:block w-64 border-r border-neutral-200 pr-8">
+              <nav className="space-y-3">
+                {categories.map((category, index) => (
+                  <Link
+                    key={index}
+                    to={`/category/${category
+                      .toLowerCase()
+                      .replace(/[^a-z0-9]+/g, "-")}`}
+                    className="flex items-center justify-between text-gray-700 hover:text-black transition-colors py-2"
+                  >
+                    <span>{category}</span>
+                    {(category === "Woman's Fashion" ||
+                      category === "Men's Fashion") && (
+                      <ArrowRightIcon className="w-4 h-4" />
+                    )}
+                  </Link>
+                ))}
+              </nav>
+            </aside>
 
-                      {/* Main heading */}
-                      <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                        {slide.title}
-                      </h1>
-
-                      {/* Discount Badge */}
-                      {slide.discount && (
-                        <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg mb-6">
-                          <span className="text-2xl font-bold">
-                            Save up to {slide.discount}
+            {/* Hero Carousel */}
+            <div className="flex-1 relative overflow-hidden rounded-lg">
+              {/* Carousel Slides Container */}
+              <div
+                className="flex transition-transform duration-700 ease-in-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {carouselSlides.map((slide) => (
+                  <div
+                    key={slide.id}
+                    className={`min-w-full ${slide.bgColor} text-white`}
+                  >
+                    <div className="flex flex-col md:flex-row items-center justify-between px-8 md:px-16 py-12 min-h-[400px]">
+                      <div className="max-w-md mb-8 md:mb-0 z-10">
+                        <div className="flex items-center gap-3 mb-4">
+                          <svg
+                            className="w-10 h-10"
+                            viewBox="0 0 40 40"
+                            fill="none"
+                          >
+                            <path
+                              d="M20 0L25 15H40L28 24L33 40L20 30L7 40L12 24L0 15H15L20 0Z"
+                              fill="white"
+                            />
+                          </svg>
+                          <span className="text-sm font-medium">
+                            {slide.subtitle}
                           </span>
                         </div>
-                      )}
 
-                      {/* CTA */}
-                      <Link
-                        to={slide.link}
-                        className="inline-flex items-center gap-2 text-white underline hover:no-underline transition-all group"
-                      >
-                        Shop Now
-                        <svg
-                          className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={2}
-                          stroke="currentColor"
+                        <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                          {slide.title}
+                        </h1>
+
+                        {slide.discount && (
+                          <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg mb-6">
+                            <span className="text-2xl font-bold">
+                              Save up to {slide.discount}
+                            </span>
+                          </div>
+                        )}
+
+                        <Link
+                          to={slide.link}
+                          className="inline-flex items-center gap-2 text-white underline hover:no-underline transition-all group"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                          />
-                        </svg>
-                      </Link>
-                    </div>
+                          Shop Now
+                          <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      </div>
 
-                    {/* Slide Image */}
-                    <div className="flex-shrink-0 relative">
-                      <img
-                        src={slide.image}
-                        alt={slide.subtitle}
-                        className="w-full max-w-md h-auto object-contain drop-shadow-2xl"
-                      />
+                      <div className="flex-shrink-0 relative">
+                        <img
+                          src={slide.image}
+                          alt={slide.subtitle}
+                          className="w-full max-w-md h-auto object-contain drop-shadow-2xl"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            {/* Navigation Arrows */}
-            <button
-              onClick={goToPrevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all z-20"
-              aria-label="Previous slide"
-            >
-              <ChevronLeftIcon className="w-6 h-6 text-white" />
-            </button>
-            <button
-              onClick={goToNextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all z-20"
-              aria-label="Next slide"
-            >
-              <ChevronRightIcon className="w-6 h-6 text-white" />
-            </button>
+              {/* Navigation Arrows */}
+              <button
+                onClick={goToPrevSlide}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all z-20"
+                aria-label="Previous slide"
+              >
+                <ChevronLeftIcon className="w-6 h-6 text-white" />
+              </button>
+              <button
+                onClick={goToNextSlide}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all z-20"
+                aria-label="Next slide"
+              >
+                <ChevronRightIcon className="w-6 h-6 text-white" />
+              </button>
 
-            {/* Carousel Dots Indicator */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-20">
-              {carouselSlides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`transition-all ${
-                    index === currentSlide
-                      ? "w-8 h-3 bg-accent rounded-full"
-                      : "w-3 h-3 bg-white/50 hover:bg-white/70 rounded-full"
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
+              {/* Carousel Dots Indicator */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-20">
+                {carouselSlides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`transition-all ${
+                      index === currentSlide
+                        ? "w-8 h-3 bg-accent rounded-full"
+                        : "w-3 h-3 bg-white/50 hover:bg-white/70 rounded-full"
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -509,7 +417,7 @@ export const HomePage: FC = () => {
             }
           />
 
-          {/* Product Grid */}
+          {/* Product Grid - Dynamic */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {flashSaleProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -518,7 +426,9 @@ export const HomePage: FC = () => {
 
           {/* View All Button */}
           <div className="flex justify-center">
-            <Button variant="primary">View All Products</Button>
+            <Link to="/products">
+              <Button variant="primary">View All Products</Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -534,10 +444,14 @@ export const HomePage: FC = () => {
           <SectionHeader
             subtitle="This Month"
             title="Best Selling Products"
-            action={<Button variant="primary">View All</Button>}
+            action={
+              <Link to="/products">
+                <Button variant="primary">View All</Button>
+              </Link>
+            }
           />
 
-          {/* Product Grid */}
+          {/* Product Grid - Dynamic */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {bestSellingProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -599,7 +513,6 @@ export const HomePage: FC = () => {
                 </Button>
               </div>
 
-              {/* Banner Image */}
               <div className="flex-shrink-0">
                 <img
                   src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/0c32ab64024057.5ac49b57aa614.jpg"
@@ -636,7 +549,7 @@ export const HomePage: FC = () => {
             }
           />
 
-          {/* Product Grid */}
+          {/* Product Grid - Dynamic */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {exploreProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -645,7 +558,9 @@ export const HomePage: FC = () => {
 
           {/* View All Button */}
           <div className="flex justify-center">
-            <Button variant="primary">View All Products</Button>
+            <Link to="/products">
+              <Button variant="primary">View All Products</Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -657,11 +572,8 @@ export const HomePage: FC = () => {
             {/* Free Delivery */}
             <div className="flex flex-col items-center text-center group">
               <div className="relative w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110">
-                {/* Outer ring */}
                 <div className="absolute inset-0 rounded-full bg-gray-200 dark:bg-dark-bg-secondary"></div>
-                {/* Middle ring - brand red */}
                 <div className="absolute inset-2 rounded-full bg-accent/30 group-hover:bg-accent/40 transition-colors"></div>
-                {/* Inner circle - darker red */}
                 <div className="absolute inset-4 rounded-full bg-accent flex items-center justify-center group-hover:bg-accent-hover transition-colors">
                   <TruckIcon className="w-8 h-8 text-white" />
                 </div>
@@ -677,11 +589,8 @@ export const HomePage: FC = () => {
             {/* 24/7 Support */}
             <div className="flex flex-col items-center text-center group">
               <div className="relative w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110">
-                {/* Outer ring */}
                 <div className="absolute inset-0 rounded-full bg-gray-200 dark:bg-dark-bg-secondary"></div>
-                {/* Middle ring - brand red */}
                 <div className="absolute inset-2 rounded-full bg-accent/30 group-hover:bg-accent/40 transition-colors"></div>
-                {/* Inner circle - darker red */}
                 <div className="absolute inset-4 rounded-full bg-accent flex items-center justify-center group-hover:bg-accent-hover transition-colors">
                   <ChatBubbleLeftRightIcon className="w-8 h-8 text-white" />
                 </div>
@@ -697,11 +606,8 @@ export const HomePage: FC = () => {
             {/* Money Back Guarantee */}
             <div className="flex flex-col items-center text-center group">
               <div className="relative w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110">
-                {/* Outer ring */}
                 <div className="absolute inset-0 rounded-full bg-gray-200 dark:bg-dark-bg-secondary"></div>
-                {/* Middle ring - brand red */}
                 <div className="absolute inset-2 rounded-full bg-accent/30 group-hover:bg-accent/40 transition-colors"></div>
-                {/* Inner circle - darker red */}
                 <div className="absolute inset-4 rounded-full bg-accent flex items-center justify-center group-hover:bg-accent-hover transition-colors">
                   <ShieldCheckIcon className="w-8 h-8 text-white" />
                 </div>

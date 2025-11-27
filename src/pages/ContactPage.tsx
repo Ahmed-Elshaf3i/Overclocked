@@ -3,7 +3,9 @@ import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
+// ContactPage component - Contact page with support info and form
 export const ContactPage: FC = () => {
+  // Form state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -11,14 +13,17 @@ export const ContactPage: FC = () => {
     message: '',
   });
   
+  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+    // In real app: send data to API
     alert('Message sent successfully!');
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
@@ -27,10 +32,10 @@ export const ContactPage: FC = () => {
     <div className="w-full">
       {/* Breadcrumb */}
       <div className="container-custom py-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-dark-text-tertiary">
-          <a href="/" className="hover:text-black dark:hover:text-dark-text-primary transition-colors">Home</a>
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <a href="/" className="hover:text-black">Home</a>
           <span>/</span>
-          <span className="text-black dark:text-dark-text-primary">Contact</span>
+          <span className="text-black">Contact</span>
         </div>
       </div>
       
@@ -41,50 +46,50 @@ export const ContactPage: FC = () => {
             {/* Left Side - Contact Information */}
             <div className="lg:col-span-1 space-y-8">
               {/* Call To Us Card */}
-              <div className="bg-white dark:bg-dark-bg-secondary shadow-lg dark:shadow-card-dark rounded-lg p-8 border border-transparent dark:border-dark-border-primary transition-colors duration-300">
+              <div className="bg-white shadow-lg rounded-lg p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="relative w-10 h-10 rounded-full flex items-center justify-center group">
                     {/* Outer ring */}
-                    <div className="absolute inset-0 rounded-full bg-accent/20 dark:bg-dark-accent-primary/20"></div>
+                    <div className="absolute inset-0 rounded-full bg-accent/20"></div>
                     {/* Inner circle - solid red */}
-                    <div className="absolute inset-1 rounded-full bg-accent dark:bg-dark-accent-primary flex items-center justify-center group-hover:bg-accent-hover dark:group-hover:bg-dark-accent-secondary transition-colors">
+                    <div className="absolute inset-1 rounded-full bg-accent flex items-center justify-center group-hover:bg-accent-hover transition-colors">
                       <PhoneIcon className="w-5 h-5 text-white" />
                     </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary">Call To Us</h3>
+                  <h3 className="text-lg font-semibold">Call To Us</h3>
                 </div>
                 
-                <div className="space-y-4 text-sm text-gray-700 dark:text-dark-text-secondary">
+                <div className="space-y-4 text-sm">
                   <p>We are available 24/7, 7 days a week.</p>
-                  <p className="font-medium text-gray-900 dark:text-dark-text-primary">Phone: +8801611112222</p>
+                  <p className="font-medium">Phone: +8801611112222</p>
                 </div>
               </div>
               
               {/* Write To Us Card */}
-              <div className="bg-white dark:bg-dark-bg-secondary shadow-lg dark:shadow-card-dark rounded-lg p-8 border border-transparent dark:border-dark-border-primary transition-colors duration-300">
+              <div className="bg-white shadow-lg rounded-lg p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="relative w-10 h-10 rounded-full flex items-center justify-center group">
                     {/* Outer ring */}
-                    <div className="absolute inset-0 rounded-full bg-accent/20 dark:bg-dark-accent-primary/20"></div>
+                    <div className="absolute inset-0 rounded-full bg-accent/20"></div>
                     {/* Inner circle - solid red */}
-                    <div className="absolute inset-1 rounded-full bg-accent dark:bg-dark-accent-primary flex items-center justify-center group-hover:bg-accent-hover dark:group-hover:bg-dark-accent-secondary transition-colors">
+                    <div className="absolute inset-1 rounded-full bg-accent flex items-center justify-center group-hover:bg-accent-hover transition-colors">
                       <EnvelopeIcon className="w-5 h-5 text-white" />
                     </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary">Write To Us</h3>
+                  <h3 className="text-lg font-semibold">Write To Us</h3>
                 </div>
                 
-                <div className="space-y-4 text-sm text-gray-700 dark:text-dark-text-secondary">
+                <div className="space-y-4 text-sm">
                   <p>Fill out our form and we will contact you within 24 hours.</p>
-                  <p className="font-medium text-gray-900 dark:text-dark-text-primary">Emails: customer@exclusive.com</p>
-                  <p className="font-medium text-gray-900 dark:text-dark-text-primary">Emails: support@exclusive.com</p>
+                  <p className="font-medium">Emails: customer@exclusive.com</p>
+                  <p className="font-medium">Emails: support@exclusive.com</p>
                 </div>
               </div>
             </div>
             
             {/* Right Side - Contact Form */}
             <div className="lg:col-span-2">
-              <div className="bg-white dark:bg-dark-bg-secondary shadow-lg dark:shadow-card-dark rounded-lg p-8 border border-transparent dark:border-dark-border-primary transition-colors duration-300">
+              <div className="bg-white shadow-lg rounded-lg p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name, Email, Phone Row */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -123,7 +128,7 @@ export const ContactPage: FC = () => {
                       onChange={handleChange}
                       required
                       rows={8}
-                      className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-dark-border-primary rounded-lg bg-white dark:bg-dark-bg-secondary text-gray-900 dark:text-dark-text-primary focus:outline-none focus:border-accent dark:focus:border-dark-accent-primary focus:ring-2 focus:ring-accent/20 dark:focus:ring-dark-accent-primary/20 transition-all duration-300 placeholder:text-neutral-400 dark:placeholder:dark-text-muted hover:border-neutral-300 dark:hover:border-dark-border-secondary resize-none"
+                      className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200 placeholder:text-neutral-400 hover:border-neutral-300 resize-none"
                     />
                   </div>
                   

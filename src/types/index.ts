@@ -126,3 +126,9 @@ export interface SignupCredentials {
   password: string;
 }
 
+// Wishlist Type
+export interface WishlistItem {
+  product: Product;
+  addedAt: string;
+}
+
