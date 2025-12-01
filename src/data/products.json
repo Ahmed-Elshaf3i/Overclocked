@@ -314,8 +314,8 @@
   {
     "id": "20",
     "name": "TP-Link WiFi 6 Router",
-    "price": 89.00,
-    "originalPrice": 120.00,
+    "price": 89.0,
+    "originalPrice": 120.0,
     "rating": 4,
     "reviews": 90,
     "image": "/public/images/products/tblinkrouter.jpg",
