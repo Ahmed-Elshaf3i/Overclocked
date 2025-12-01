@@ -13,13 +13,13 @@
 
 ## 👥 Team Members
 
-| Name                | Role           | GitHub                                     |
-| ------------------- | -------------- | ------------------------------------------ |
-| **Ahmed Elshafei**  | Core Developer | [@AhmedElshafei](https://github.com/)      |
-| **Seif Atef**       | Core Developer | [@seif-a096](https://github.com/seif-a096) |
-| **Abdelrahman Amr** | Core Developer | [@AbdelrahmanAmr](https://github.com/)     |
-| **Zyad Ayman**      | Core Developer | [@ZyadAyman](https://github.com/)          |
-| **Ebraam Ashraf**   | Core Developer | [@EbraamAshraf](https://github.com/)       |
+| Name                | GitHub                                     |
+| ------------------- | ------------------------------------------ |
+| **Ahmed Elshafei**  | [@AhmedElshafei](https://github.com/)      |
+| **Seif Atef**       | [@seif-a096](https://github.com/seif-a096) |
+| **Abdelrahman Amr** | [@AbdelrahmanAmr](https://github.com/)     |
+| **Zyad Ayman**      | [@ZyadAyman](https://github.com/)          |
+| **Ebraam Ashraf**   | [@EbraamAshraf](https://github.com/)       |
 
 ---
 
