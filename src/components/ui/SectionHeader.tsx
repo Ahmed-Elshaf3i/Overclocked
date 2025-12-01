@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC } from "react";
 
 // SectionHeader component props interface
 interface SectionHeaderProps {
@@ -23,14 +23,15 @@ export const SectionHeader: FC<SectionHeaderProps> = ({
             <span className="text-accent font-semibold">{subtitle}</span>
           </div>
         )}
-        
+
         {/* Main Title */}
-        <h2 className="text-3xl md:text-4xl font-bold text-black dark:text-gray-100">{title}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-black dark:text-gray-100">
+          {title}
+        </h2>
       </div>
-      
+
       {/* Optional Action (e.g., View All button) */}
       {action && <div>{action}</div>}
     </div>
   );
 };
-

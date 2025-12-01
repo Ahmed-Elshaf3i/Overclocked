@@ -135,22 +135,6 @@ export const HomePage: FC = () => {
                     formatTimeValue={flashSaleCountdown.formatTimeValue}
                   />
                 </div>
-
-                {/* Navigation buttons */}
-                <div className="flex gap-2">
-                  <button
-                    className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center hover:bg-neutral-200 transition-colors"
-                    aria-label="Previous products"
-                  >
-                    <ChevronLeftIcon className="w-5 h-5" />
-                  </button>
-                  <button
-                    className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center hover:bg-neutral-200 transition-colors"
-                    aria-label="Next products"
-                  >
-                    <ChevronRightIcon className="w-5 h-5" />
-                  </button>
-                </div>
               </div>
             }
           />
@@ -278,22 +262,6 @@ export const HomePage: FC = () => {
           <SectionHeader
             subtitle="Our Products"
             title="Explore Our Products"
-            action={
-              <div className="flex gap-2">
-                <button
-                  className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center hover:bg-neutral-200 transition-colors"
-                  aria-label="Previous products"
-                >
-                  <ChevronLeftIcon className="w-5 h-5" />
-                </button>
-                <button
-                  className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center hover:bg-neutral-200 transition-colors"
-                  aria-label="Next products"
-                >
-                  <ChevronRightIcon className="w-5 h-5" />
-                </button>
-              </div>
-            }
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
