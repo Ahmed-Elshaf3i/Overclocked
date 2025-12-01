@@ -1,5 +1,7 @@
-import { FC, useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { FC, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   MagnifyingGlassIcon,
   HeartIcon,
@@ -7,8 +9,8 @@ import {
   UserIcon,
   Bars3Icon,
   XMarkIcon,
-} from '@heroicons/react/24/outline';
-import { ThemeToggle } from '../ui/ThemeToggle';
+} from "@heroicons/react/24/outline";
+import { ThemeToggle } from "../ui/ThemeToggle";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 
@@ -17,28 +19,69 @@ export const Header: FC = () => {
   const navigate = useNavigate();
   const { cartItems } = useCart();
   const { wishlistItems } = useWishlist();
-  
+
   // Mobile menu state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  
+  const [searchQuery, setSearchQuery] = useState("");
+  const { t } = useTranslation();
+  const [lang, setLang] = useState<string>(
+    () =>
+      (typeof document !== "undefined" && document.documentElement.lang) || "en"
+  );
+
+  useEffect(() => {
+    // Initialize from localStorage if available
+    try {
+      const stored = localStorage.getItem("site_lang");
+      if (stored) setLang(stored);
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    // Apply direction and lang attributes to the root element and body class
+    if (typeof document === "undefined") return;
+
+    document.documentElement.lang = lang;
+    if (lang === "ar") {
+      document.documentElement.dir = "rtl";
+      document.body.classList.add("rtl");
+    } else {
+      document.documentElement.dir = "ltr";
+      document.body.classList.remove("rtl");
+    }
+
+    try {
+      localStorage.setItem("site_lang", lang);
+    } catch (e) {
+      // ignore
+    }
+    try {
+      i18n.changeLanguage(lang);
+    } catch (e) {
+      /* ignore */
+    }
+  }, [lang]);
+
   // Navigation links
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Contact', path: '/contact' },
-    { name: 'About', path: '/about' },
-    { name: 'Sign Up', path: '/signup' },
+    { key: "nav.home", path: "/" },
+    { key: "nav.tech", path: "/laptops" },
+    { key: "nav.contact", path: "/contact" },
+    { key: "nav.about", path: "/about" },
+    { key: "nav.signup", path: "/signup" },
   ];
-  
+
   // Handle search
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery('');
+      setSearchQuery("");
     }
   };
-  
+
   return (
     <header className="w-full">
       {/* Top Bar - Promotional Banner */}
@@ -47,33 +90,45 @@ export const Header: FC = () => {
           <div className="flex items-center justify-between text-sm">
             <div className="flex-1" />
             <p className="text-center">
-              Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!{' '}
-              <Link to="/" className="font-semibold underline ml-2 hover:text-gray-200 transition-colors">
+              {t("promo")}{" "}
+              <Link
+                to="/"
+                className="font-semibold underline ml-2 hover:text-gray-200 transition-colors"
+              >
                 ShopNow
               </Link>
             </p>
             <div className="flex-1 flex justify-end">
-              <select className="bg-transparent text-white border-none outline-none cursor-pointer">
-                <option value="en" className="bg-black text-white">English</option>
-                <option value="ar" className="bg-black text-white">Arabic</option>
+              <select
+                value={lang}
+                onChange={(e) => setLang(e.target.value)}
+                className="bg-transparent text-white border-none outline-none cursor-pointer"
+                aria-label={t("language.english")}
+              >
+                <option value="en" className="bg-black text-white">
+                  {t("language.english")}
+                </option>
+                <option value="ar" className="bg-black text-white">
+                  {t("language.arabic")}
+                </option>
               </select>
             </div>
           </div>
         </div>
       </div>
-      
+
       {/* Main Navigation */}
       <div className="border-b border-neutral-200 dark:border-dark-border-primary bg-white dark:bg-dark-bg-secondary transition-colors duration-300 shadow-sm dark:shadow-card-dark">
         <div className="container-custom py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="text-2xl font-bold text-black dark:text-dark-text-primary transition-all duration-300 hover:scale-105"
             >
               Exclusive
             </Link>
-            
+
             {/* Desktop Navigation Links */}
             <nav className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
@@ -83,20 +138,23 @@ export const Header: FC = () => {
                   className={({ isActive }) =>
                     `transition-all duration-300 ${
                       isActive
-                        ? 'text-black dark:text-dark-text-primary border-b-2 border-black dark:border-dark-accent-primary font-medium'
-                        : 'text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary'
+                        ? "text-black dark:text-dark-text-primary border-b-2 border-black dark:border-dark-accent-primary font-medium"
+                        : "text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary"
                     }`
                   }
                 >
-                  {link.name}
+                  {t(link.key)}
                 </NavLink>
               ))}
             </nav>
-            
+
             {/* Search & Icons */}
             <div className="flex items-center gap-4">
               {/* Search Bar */}
-              <form onSubmit={handleSearch} className="hidden lg:flex items-center bg-neutral-100 dark:bg-dark-bg-tertiary rounded-lg px-3 py-2 transition-all duration-300 hover:ring-2 hover:ring-gray-300 dark:hover:ring-dark-accent-primary/30">
+              <form
+                onSubmit={handleSearch}
+                className="hidden lg:flex items-center bg-neutral-100 dark:bg-dark-bg-tertiary rounded-lg px-3 py-2 transition-all duration-300 hover:ring-2 hover:ring-gray-300 dark:hover:ring-dark-accent-primary/30"
+              >
                 <input
                   type="text"
                   placeholder="What are you looking for?"
@@ -108,10 +166,10 @@ export const Header: FC = () => {
                   <MagnifyingGlassIcon className="w-5 h-5 text-gray-600 dark:text-dark-text-tertiary" />
                 </button>
               </form>
-              
+
               {/* Theme Toggle */}
               <ThemeToggle />
-              
+
               {/* Wishlist Icon */}
               <Link
                 to="/wishlist"
@@ -125,7 +183,7 @@ export const Header: FC = () => {
                   </span>
                 )}
               </Link>
-              
+
               {/* Cart Icon */}
               <Link
                 to="/cart"
@@ -139,7 +197,7 @@ export const Header: FC = () => {
                   </span>
                 )}
               </Link>
-              
+
               {/* User Account Icon */}
               <Link
                 to="/profile"
@@ -148,7 +206,7 @@ export const Header: FC = () => {
               >
                 <UserIcon className="w-6 h-6 text-gray-900 dark:text-dark-text-primary transition-transform group-hover:scale-110" />
               </Link>
-              
+
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -163,7 +221,7 @@ export const Header: FC = () => {
               </button>
             </div>
           </div>
-          
+
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
             <nav className="md:hidden mt-4 pb-4 border-t border-neutral-200 dark:border-dark-border-primary pt-4 bg-white/50 dark:bg-dark-bg-secondary/50 backdrop-blur-sm rounded-b-lg">
@@ -176,12 +234,12 @@ export const Header: FC = () => {
                     className={({ isActive }) =>
                       `py-2 px-3 rounded-lg transition-all duration-300 ${
                         isActive
-                          ? 'text-accent dark:text-dark-accent-primary font-medium bg-accent/10 dark:bg-dark-accent-primary/10'
-                          : 'text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary'
+                          ? "text-accent dark:text-dark-accent-primary font-medium bg-accent/10 dark:bg-dark-accent-primary/10"
+                          : "text-gray-600 dark:text-dark-text-tertiary hover:text-black dark:hover:text-dark-text-primary hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary"
                       }`
                     }
                   >
-                    {link.name}
+                    {t(link.key)}
                   </NavLink>
                 ))}
               </div>
@@ -192,4 +250,3 @@ export const Header: FC = () => {
     </header>
   );
 };
-

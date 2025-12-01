@@ -14,6 +14,8 @@ import { SignUpPage } from "@/pages/SignUpPage";
 import { WishlistPage } from "@/pages/WishlistPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import { ProductsPage } from "@/pages/ProductsPage";
+import { TechComp } from "@/pages/TechComp";
+import { TechAcc } from "@/pages/TechAcc";
 
 // Create browser router with all routes
 export const router = createBrowserRouter([
@@ -65,6 +67,18 @@ export const router = createBrowserRouter([
       {
         path: "wishlist",
         element: <WishlistPage />,
+      },
+      {
+        path: "laptops",
+        element: <TechComp />,
+      },
+      {
+        path: "smartphones",
+        element: <TechComp />,
+      },
+      {
+        path: "women-cloth",
+        element: <TechAcc />,
       },
       {
         path: "*",

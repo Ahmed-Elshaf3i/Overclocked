@@ -6,7 +6,6 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { Button } from "@/components/ui/Button";
 import { PageLoader } from "@/components/ui/PageLoader";
 import { HeroCarousel } from "@/components/home/HeroCarousel";
-import { CategorySidebar } from "@/components/home/CategorySidebar";
 import { CountdownTimer } from "@/components/home/CountdownTimer";
 import { TrustSignals } from "@/components/home/TrustSignals";
 import { useProducts } from "@/hooks/useProducts";
@@ -115,13 +114,10 @@ export const HomePage: FC = () => {
 
   return (
     <div className="w-full">
-      {/* Hero Section with Category Sidebar */}
+      {/* Hero Section */}
       <section className="border-b border-neutral-200">
         <div className="container-custom py-8">
-          <div className="flex gap-8">
-            <CategorySidebar />
-            <HeroCarousel />
-          </div>
+          <HeroCarousel />
         </div>
       </section>
 

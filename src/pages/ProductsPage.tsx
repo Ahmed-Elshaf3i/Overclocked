@@ -1,13 +1,11 @@
-import { FC, useState, useMemo } from "react";
+import { FC, useState, useMemo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/contexts/ToastContext";
-import {
-  FunnelIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 export const ProductsPage: FC = () => {
   const { products, loading } = useProducts();
@@ -18,38 +16,52 @@ export const ProductsPage: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("default");
   const [priceRange, setPriceRange] = useState<string>("all");
-  
+
   // Handle wishlist toggle
   const handleWishlistToggle = (productId: string) => {
     const product = products.find((p) => p.id === productId);
     if (product) {
       if (isInWishlist(productId)) {
-        showToast('Product already in wishlist', 'info');
+        showToast("Product already in wishlist", "info");
       } else {
         addToWishlist(product);
-        showToast(`${product.name} added to wishlist!`, 'success');
+        showToast(`${product.name} added to wishlist!`, "success");
       }
     }
   };
-  
+
   // Handle add to cart
   const handleAddToCart = (productId: string) => {
     const product = products.find((p) => p.id === productId);
     if (product) {
       addToCart(product, 1);
-      showToast(`${product.name} added to cart!`, 'success');
+      showToast(`${product.name} added to cart!`, "success");
     }
   };
-  
+
   // Handle quick view
   const handleQuickView = (_productId: string) => {
-    showToast('Quick view - Coming Soon!', 'info');
+    showToast("Quick view - Coming Soon!", "info");
   };
 
   // Get unique categories
   const categories = useMemo(() => {
     return ["all", ...Array.from(new Set(products.map((p) => p.category)))];
   }, [products]);
+
+  // Initialize searchQuery from URL `?search=` param so header searches land here
+  const location = useLocation();
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(location.search);
+      const q = params.get("search") || "";
+      // Only update if different to avoid resetting user edits
+      if (q && q !== searchQuery) setSearchQuery(q);
+    } catch (e) {
+      // ignore
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -125,7 +137,9 @@ export const ProductsPage: FC = () => {
       {/* Header */}
       <div className="border-b border-neutral-200 dark:border-dark-border-primary">
         <div className="container-custom py-12">
-          <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-dark-text-primary">All Products</h1>
+          <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-dark-text-primary">
+            All Products
+          </h1>
           <p className="text-gray-600 dark:text-dark-text-secondary">
             Discover our complete collection of {products.length} products
           </p>
@@ -202,7 +216,10 @@ export const ProductsPage: FC = () => {
           </div>
 
           {/* Active Filters Display */}
-          {(searchQuery || selectedCategory !== "all" || priceRange !== "all" || sortBy !== "default") && (
+          {(searchQuery ||
+            selectedCategory !== "all" ||
+            priceRange !== "all" ||
+            sortBy !== "default") && (
             <div className="mt-4 flex flex-wrap gap-2 items-center">
               <span className="text-sm text-gray-600">Active filters:</span>
               {searchQuery && (
@@ -270,8 +287,13 @@ export const ProductsPage: FC = () => {
         {/* Results Count */}
         <div className="mb-8">
           <p className="text-gray-600">
-            Showing <span className="font-semibold text-black">{filteredProducts.length}</span> of{" "}
-            <span className="font-semibold text-black">{products.length}</span> products
+            Showing{" "}
+            <span className="font-semibold text-black">
+              {filteredProducts.length}
+            </span>{" "}
+            of{" "}
+            <span className="font-semibold text-black">{products.length}</span>{" "}
+            products
           </p>
         </div>
 
@@ -279,8 +301,8 @@ export const ProductsPage: FC = () => {
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
-              <ProductCard 
-                key={product.id} 
+              <ProductCard
+                key={product.id}
                 product={product}
                 onAddToWishlist={handleWishlistToggle}
                 onAddToCart={handleAddToCart}
