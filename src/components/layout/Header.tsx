@@ -126,7 +126,7 @@ export const Header: FC = () => {
               to="/"
               className="text-2xl font-bold text-black dark:text-dark-text-primary transition-all duration-300 hover:scale-105"
             >
-              Exclusive
+              Overclocked
             </Link>
 
             {/* Desktop Navigation Links */}
