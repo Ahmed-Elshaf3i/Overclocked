@@ -1,10 +1,5 @@
 import { FC, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import {
-  ArrowRightIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { TIMING } from "@/constants";
 
 interface CarouselSlide {
