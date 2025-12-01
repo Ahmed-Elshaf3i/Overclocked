@@ -25,7 +25,7 @@ export const SectionHeader: FC<SectionHeaderProps> = ({
         )}
         
         {/* Main Title */}
-        <h2 className="text-3xl md:text-4xl font-bold text-black">{title}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-black dark:text-gray-100">{title}</h2>
       </div>
       
       {/* Optional Action (e.g., View All button) */}
