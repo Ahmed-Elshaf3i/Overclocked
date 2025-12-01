@@ -65,8 +65,7 @@ const carouselSlides: CarouselSlide[] = [
     title: "Smart Home Deal",
     subtitle: "Apple Watch Series 9",
     discount: "18%",
-    image:
-      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MT5J3ref_VW_34FR+watch-49-titanium-ultra_VW_34FR+watch-face-49-ocean-ultra_VW_34FR?wid=1000&hei=1000&fmt=png-alpha",
+    image: "/images/products/applewatch.jpg",
     bgColor: "bg-gradient-to-r from-teal-900 to-cyan-800",
     link: "/products/apple-watch",
   },
@@ -74,10 +73,12 @@ const carouselSlides: CarouselSlide[] = [
 
 export const HeroCarousel: FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   // determine direction (ltr / rtl) from document - this allows RTL support
   const isRtl =
     typeof document !== "undefined" && document.documentElement.dir === "rtl";
+
   // Auto-rotate carousel
   useEffect(() => {
     const interval = setInterval(() => {
@@ -99,6 +100,18 @@ export const HeroCarousel: FC = () => {
 
   const goToNextSlide = (): void => {
     setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
+  };
+
+  // Handle mouse move for 3D tilt effect
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientY - rect.top) / rect.height - 0.5;
+    const y = (e.clientX - rect.left) / rect.width - 0.5;
+    setTilt({ x: x * 20, y: y * 20 });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
   };
 
   return (
@@ -140,21 +153,32 @@ export const HeroCarousel: FC = () => {
                     </span>
                   </div>
                 )}
-
+                {/* 
                 <Link
                   to={slide.link}
                   className="inline-flex items-center gap-2 text-white underline hover:no-underline transition-all group"
                 >
                   Shop Now
                   <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                </Link> */}
               </div>
 
-              <div className="flex-shrink-0 relative">
+              {/* 3D Tilt Image on Hover */}
+              <div
+                className="flex-shrink-0 relative"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  perspective: "1000px",
+                }}
+              >
                 <img
                   src={slide.image}
                   alt={slide.subtitle}
-                  className="w-full max-w-md h-auto object-contain drop-shadow-2xl"
+                  className="w-full max-w-md h-auto object-contain drop-shadow-2xl transition-transform duration-100"
+                  style={{
+                    transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(1.05)`,
+                  }}
                 />
               </div>
             </div>
