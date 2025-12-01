@@ -1,6 +1,5 @@
 import { FC, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { Button } from "@/components/ui/Button";

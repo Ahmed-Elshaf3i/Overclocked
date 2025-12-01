@@ -81,11 +81,8 @@
     "originalPrice": 150.0,
     "rating": 4,
     "reviews": 80,
-    "image": "/images/products/shopping.webp",
-    "images": [
-      "/images/products/shopping.webp",
-      "/images/products/shopping.webp"
-    ],
+    "image": "/images/products/applemagickeyboard.jpg",
+    "images": ["/images/products/applemagickeyboard.jpg"],
     "category": "Keyboards",
     "description": "Slim wireless keyboard with quiet and responsive keys.",
     "colors": ["#FFFFFF", "#C0C0C0"],
