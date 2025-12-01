@@ -259,10 +259,7 @@ export const HomePage: FC = () => {
       {/* Explore Our Products Section */}
       <section className="py-16">
         <div className="container-custom">
-          <SectionHeader
-            subtitle="Our Products"
-            title="Explore Our Products"
-          />
+          <SectionHeader subtitle="Our Products" title="Explore Our Products" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {exploreProducts.map((product) => (
