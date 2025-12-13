@@ -1,4 +1,4 @@
-const User = require('../model/User');           // ← make sure path is correct (models, not model)
+const User = require('../model/User');          
 const bcrypt = require('bcryptjs');
 const generateToken = require('../utils/generateToken');
 
